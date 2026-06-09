@@ -5,7 +5,7 @@
 const TEMPLATES = {
 
   A: {
-    label: "模板 A",
+    label: "永慶不動產",
     file: "templates/template_a.jpg",
 
     photo: {
@@ -54,7 +54,7 @@ const TEMPLATES = {
   },
 
   B: {
-    label: "模板 B",
+    label: "永義房屋",
     file: "templates/template_b.jpg",
 
     photo: {
@@ -103,7 +103,7 @@ const TEMPLATES = {
   },
 
   C: {
-    label: "模板 C",
+    label: "喆禮團隊",
     file: "templates/template_c.png",
 
     photo: {
