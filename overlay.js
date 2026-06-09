@@ -35,72 +35,83 @@ function isLineBrowser() {
 
 function showLineBlockScreen() {
   const currentUrl = location.href;
-  const isAndroid  = /Android/.test(navigator.userAgent);
-  const isIOS      = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const ua         = navigator.userAgent;
+  const isAndroid  = /Android/.test(ua);
+  const isIOS      = /iPad|iPhone|iPod/.test(ua);
 
-  // ── 嘗試直接喚起外部瀏覽器 ──────────────────────────
+  // 自動嘗試喚起外部瀏覽器
   if (isAndroid) {
-    // Android：intent scheme 喚起 Chrome
     const intent = "intent://" + currentUrl.replace(/^https?:\/\//, "") +
       "#Intent;scheme=https;package=com.android.chrome;end";
-    setTimeout(() => { location.href = intent; }, 100);
+    setTimeout(function() { location.href = intent; }, 300);
   } else if (isIOS) {
-    // iOS：嘗試 Chrome，失敗後嘗試 Safari（Safari 無需特殊 scheme）
-    const chromeUrl = currentUrl.replace(/^https/, "googlechrome")
-                                .replace(/^http/, "googlechrome");
-    setTimeout(() => { location.href = chromeUrl; }, 100);
+    const chromeUrl = currentUrl.replace(/^https:/, "googlechrome:").replace(/^http:/, "googlechrome:");
+    setTimeout(function() { location.href = chromeUrl; }, 300);
   }
 
-  // ── 顯示備用引導畫面（跳轉失敗或未安裝時看到）────────
-  const screen = document.createElement("div");
-  screen.id = "line-block-screen";
-  screen.style.cssText = [
-    "position:fixed", "inset:0", "background:#fff", "z-index:99999",
-    "display:flex", "flex-direction:column", "align-items:center",
-    "justify-content:center", "padding:32px 24px",
-    "box-sizing:border-box", "text-align:center", "font-family:sans-serif"
-  ].join(";");
+  // 建立全螢幕引導畫面
+  const wrap = document.createElement("div");
+  wrap.id = "line-block-screen";
+  Object.assign(wrap.style, {
+    position: "fixed", inset: "0", background: "#fff", zIndex: "99999",
+    display: "flex", flexDirection: "column", alignItems: "center",
+    justifyContent: "center", padding: "32px 24px",
+    boxSizing: "border-box", textAlign: "center", fontFamily: "sans-serif"
+  });
 
-  // 按鈕區：依裝置顯示對應選項
-  const btnAndroid = isAndroid ? [
-    "<button onclick="location.href='intent://" + currentUrl.replace(/^https?:\/\//, "") +
-    "#Intent;scheme=https;package=com.android.chrome;end'" ",
-    "style='width:100%;padding:14px;border:none;border-radius:12px;",
-    "background:#1A73E8;color:#fff;font-size:15px;font-weight:700;",
-    "cursor:pointer;margin-bottom:10px'>",
-    "🔵 用 Chrome 開啟</button>"
-  ].join("") : "";
+  // emoji
+  const emoji = document.createElement("div");
+  emoji.textContent = "🌐";
+  emoji.style.cssText = "font-size:52px;margin-bottom:14px";
 
-  const btnIOS = isIOS ? [
-    "<button onclick="location.href='" + currentUrl.replace(/^https/, "googlechrome").replace(/^http/, "googlechrome") + "'" ",
-    "style='width:100%;padding:14px;border:none;border-radius:12px;",
-    "background:#1A73E8;color:#fff;font-size:15px;font-weight:700;",
-    "cursor:pointer;margin-bottom:10px'>",
-    "🔵 用 Chrome 開啟</button>",
-    "<button onclick="location.href='" + currentUrl.replace(/^https/, "x-web-search") + "'" ",
-    "style='width:100%;padding:14px;border:none;border-radius:12px;",
-    "background:#000;color:#fff;font-size:15px;font-weight:700;cursor:pointer'>",
-    "⚫ 用 Safari 開啟</button>"
-  ].join("") : "";
+  // 標題
+  const title = document.createElement("h1");
+  title.textContent = "正在開啟瀏覽器…";
+  title.style.cssText = "font-size:20px;font-weight:700;color:#1c1c1e;margin:0 0 8px";
 
-  const btnFallback = (!isAndroid && !isIOS) ? "" : "";
+  // 說明
+  const desc = document.createElement("p");
+  desc.innerHTML = "若未自動跳轉，請點下方按鈕<br>或手動選擇「用瀏覽器開啟」";
+  desc.style.cssText = "font-size:14px;color:#777;line-height:1.6;margin:0 0 24px";
 
-  screen.innerHTML = [
-    "<div style='font-size:52px;margin-bottom:14px'>🌐</div>",
-    "<h1 style='font-size:20px;font-weight:700;color:#1c1c1e;margin:0 0 8px'>正在開啟瀏覽器…</h1>",
-    "<p style='font-size:14px;color:#777;line-height:1.6;margin:0 0 24px'>",
-    "若未自動跳轉，請點下方按鈕<br>或手動選擇「用瀏覽器開啟」</p>",
-    "<div style='width:100%;max-width:300px;margin-bottom:20px'>",
-    btnAndroid, btnIOS, btnFallback,
-    "</div>",
-    "<div style='background:#f5f5f5;border-radius:12px;padding:16px 20px;",
-    "text-align:left;width:100%;max-width:300px;box-sizing:border-box'>",
-    "<p style='margin:0;font-size:13px;line-height:2;color:#555'>",
-    "手動方式：點右上角 <b>「···」</b><br>→ 選 <b>「用瀏覽器開啟」</b></p>",
-    "</div>"
-  ].join("");
+  // 按鈕區
+  const btnWrap = document.createElement("div");
+  btnWrap.style.cssText = "width:100%;max-width:300px;margin-bottom:20px";
 
-  document.body.appendChild(screen);
+  function makeBtn(text, bgColor, href) {
+    const b = document.createElement("button");
+    b.textContent = text;
+    b.style.cssText = "width:100%;padding:14px;border:none;border-radius:12px;" +
+      "background:" + bgColor + ";color:#fff;font-size:15px;font-weight:700;" +
+      "cursor:pointer;margin-bottom:10px;display:block";
+    b.addEventListener("click", function() { location.href = href; });
+    return b;
+  }
+
+  if (isAndroid) {
+    const intentUrl = "intent://" + currentUrl.replace(/^https?:\/\//, "") +
+      "#Intent;scheme=https;package=com.android.chrome;end";
+    btnWrap.appendChild(makeBtn("🔵 用 Chrome 開啟", "#1A73E8", intentUrl));
+  } else if (isIOS) {
+    const chromeUrl = currentUrl.replace(/^https:/, "googlechrome:").replace(/^http:/, "googlechrome:");
+    const safariUrl = currentUrl.replace(/^https:/, "x-web-search:").replace(/^http:/, "x-web-search:");
+    btnWrap.appendChild(makeBtn("🔵 用 Chrome 開啟", "#1A73E8", chromeUrl));
+    btnWrap.appendChild(makeBtn("⚫ 用 Safari 開啟", "#333", safariUrl));
+  }
+
+  // 手動引導
+  const manual = document.createElement("div");
+  manual.style.cssText = "background:#f5f5f5;border-radius:12px;padding:16px 20px;" +
+    "text-align:left;width:100%;max-width:300px;box-sizing:border-box";
+  manual.innerHTML = "<p style='margin:0;font-size:13px;line-height:2;color:#555'>" +
+    "手動方式：點右上角 <b>「···」</b><br>→ 選 <b>「用瀏覽器開啟」</b></p>";
+
+  wrap.appendChild(emoji);
+  wrap.appendChild(title);
+  wrap.appendChild(desc);
+  wrap.appendChild(btnWrap);
+  wrap.appendChild(manual);
+  document.body.appendChild(wrap);
 }
 
 // ── 模板選擇器 ────────────────────────────────────────
