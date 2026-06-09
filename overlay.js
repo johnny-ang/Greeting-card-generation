@@ -430,40 +430,35 @@ function loadImage(src) {
 
 // 載入業務照片：依序嘗試多種 URL 格式
 function loadPhotoImage(src) {
-  // 從原始 URL 擷取 Drive file ID
   function extractId(url) {
-    const m1 = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    const m1 = url.match(/[/]d[/]([a-zA-Z0-9_-]+)/);
     if (m1) return m1[1];
-    const m2 = url.match(/id=([a-zA-Z0-9_-]+)/);
+    const m2 = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
     if (m2) return m2[1];
     return null;
   }
 
   const fileId = extractId(src);
-  // 嘗試順序：thumbnail → uc export=view → 原始 URL
   const candidates = fileId ? [
+    "https://lh3.googleusercontent.com/d/" + fileId,
     "https://drive.google.com/thumbnail?id=" + fileId + "&sz=w800",
     "https://drive.google.com/uc?export=view&id=" + fileId,
-    src,
   ] : [src];
 
-  function tryLoad(urls) {
-    if (urls.length === 0) return Promise.reject(new Error("所有 URL 均載入失敗"));
-    const [current, ...rest] = urls;
-    return new Promise((resolve) => {
+  function tryNext(list) {
+    if (!list.length) return Promise.reject(new Error("照片載入失敗"));
+    const url = list[0];
+    const remaining = list.slice(1);
+    return new Promise((resolve, reject) => {
       const img = new Image();
       img.crossOrigin = "anonymous";
       img.onload  = () => resolve(img);
-      img.onerror = () => resolve(tryLoad(rest)); // 失敗就試下一個
-      img.src = current;
-    }).then(result => {
-      // 若 result 是 Promise（遞迴），繼續等待
-      if (result instanceof HTMLImageElement) return result;
-      return result;
+      img.onerror = () => tryNext(remaining).then(resolve).catch(reject);
+      img.src = url;
     });
   }
 
-  return tryLoad(candidates);
+  return tryNext(candidates);
 }
 
 function setStatus(msg, isError = false) {
