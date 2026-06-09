@@ -104,7 +104,7 @@ const TEMPLATES = {
 
   C: {
     label: "喆禮團隊",
-    file: "templates/template_c.png",
+    file: "templates/template_c.jpg",
 
     photo: {
       x: 30,
