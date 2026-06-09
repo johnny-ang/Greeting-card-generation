@@ -19,9 +19,27 @@ const corsNotice   = document.getElementById("cors-notice");
 const ctx = canvas.getContext("2d");
 
 (async function init() {
+  detectLineBrowser();
   buildTemplatePicker();
   await loadAgents();
 })();
+
+// ── Line 內建瀏覽器偵測 ───────────────────────────────
+function detectLineBrowser() {
+  const ua = navigator.userAgent;
+  const isLine = /Line\//.test(ua);
+  if (!isLine) return;
+
+  const banner = document.getElementById("line-banner");
+  if (banner) banner.style.display = "block";
+
+  const closeBtn = document.getElementById("line-banner-close");
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => {
+      banner.style.display = "none";
+    });
+  }
+}
 
 // ── 模板選擇器 ────────────────────────────────────────
 function buildTemplatePicker() {
