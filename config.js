@@ -104,7 +104,7 @@ const TEMPLATES = {
 
   C: {
     label: "模板 C",
-    file: "templates/template_C.png",
+    file: "templates/template_c.png",
 
     photo: {
       x: 30,
