@@ -22,7 +22,7 @@ const TEMPLATES = {
     name: {
       x: 215,       // 文字水平中心（白框中心）
       y: 720,       // 文字垂直中心
-      size: 52,
+      size: 72,
       weight: "700",
       color: "#FFFFFF",
       align: "center",
@@ -31,7 +31,7 @@ const TEMPLATES = {
     phone: {
       x: 520,       // 電話橫跨全寬，置中
       y: 820,
-      size: 36,
+      size: 60,
       weight: "400",
       color: "#FFFFFF",
       align: "center",
@@ -40,7 +40,7 @@ const TEMPLATES = {
     branch: {
       x: 700,       // 底部黃條右側灰框中心
       y: 975,
-      size: 28,
+      size: 48,
       weight: "400",
       color: "#333333",
       align: "center",
