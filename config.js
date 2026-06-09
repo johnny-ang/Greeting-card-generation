@@ -1,8 +1,5 @@
 // ============================================================
-//  config.js — 套圖工具模板設定 v3
-//  letterSpacing: 文字間距（px），套用於 name / phone / branch
-//  phone.align = "left"，x 與 photo 左邊緣對齊
-//  branch.weight = "700"（粗體）
+//  config.js — 套圖工具模板設定 v4
 // ============================================================
 
 const TEMPLATES = {
@@ -19,32 +16,38 @@ const TEMPLATES = {
     },
 
     name: {
-      x: 215,           // photo 中心（30 + 390/2）
+      x: 215,
       y: 720,
       size: 85,
       weight: "700",
       color: "#FFFFFF",
+      strokeColor: "#444444",
+      strokeWidth: 6,
       align: "center",
-      letterSpacing: 8, // 字間距 px，超出 photo 寬度會自動縮放
-      maxWidth: 390,    // 不超過 photo 寬度
+      letterSpacing: 8,
+      maxWidth: 390,
     },
 
     phone: {
-      x: 30,            // 與 photo 左邊緣對齊
+      x: 30,
       y: 820,
       size: 60,
-      weight: "400",
+      weight: "700",
       color: "#FFFFFF",
+      strokeColor: "#444444",
+      strokeWidth: 5,
       align: "left",
       letterSpacing: 6,
     },
 
     branch: {
-      x: 700,           // 底部黃條右側灰框中心（上傳後依實際調整）
-      y: 975,           // 與左側 logo 同 y 軸（上傳後依實際調整）
+      x: 700,
+      y: 950,
       size: 48,
-      weight: "700",    // 改為粗體
-      color: "#333333",
+      weight: "700",
+      color: "#FFFFFF",
+      strokeColor: "#444444",
+      strokeWidth: 4,
       align: "center",
       letterSpacing: 4,
     },
@@ -67,6 +70,8 @@ const TEMPLATES = {
       size: 85,
       weight: "700",
       color: "#FFFFFF",
+      strokeColor: "#444444",
+      strokeWidth: 6,
       align: "center",
       letterSpacing: 8,
       maxWidth: 390,
@@ -76,18 +81,22 @@ const TEMPLATES = {
       x: 30,
       y: 820,
       size: 60,
-      weight: "400",
+      weight: "700",
       color: "#FFFFFF",
+      strokeColor: "#444444",
+      strokeWidth: 5,
       align: "left",
       letterSpacing: 6,
     },
 
     branch: {
       x: 700,
-      y: 975,
+      y: 950,
       size: 48,
       weight: "700",
-      color: "#333333",
+      color: "#FFFFFF",
+      strokeColor: "#444444",
+      strokeWidth: 4,
       align: "center",
       letterSpacing: 4,
     },
@@ -110,6 +119,8 @@ const TEMPLATES = {
       size: 85,
       weight: "700",
       color: "#FFFFFF",
+      strokeColor: "#444444",
+      strokeWidth: 6,
       align: "center",
       letterSpacing: 8,
       maxWidth: 390,
@@ -119,18 +130,22 @@ const TEMPLATES = {
       x: 30,
       y: 820,
       size: 60,
-      weight: "400",
+      weight: "700",
       color: "#FFFFFF",
+      strokeColor: "#444444",
+      strokeWidth: 5,
       align: "left",
       letterSpacing: 6,
     },
 
     branch: {
       x: 700,
-      y: 975,
+      y: 950,
       size: 48,
       weight: "700",
-      color: "#333333",
+      color: "#FFFFFF",
+      strokeColor: "#444444",
+      strokeWidth: 4,
       align: "center",
       letterSpacing: 4,
     },
