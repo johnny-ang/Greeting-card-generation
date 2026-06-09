@@ -203,6 +203,7 @@ async function generateImage() {
     loadingEl.style.display   = "none";
     canvas.style.display      = "block";
     btnDownload.style.display = "block";
+    cacheCanvasResult(); // iOS 預先快取 dataUrl
     setStatus("✅ 完成！點擊下方按鈕下載");
 
   } catch (err) {
@@ -326,42 +327,48 @@ function drawRectPlaceholder({ x, y, width, height }, name) {
 }
 
 // ── 下載 ─────────────────────────────────────────────
+// iOS 專用：產生完圖後預先存好 dataUrl，點擊時直接跳轉
+let _cachedDataUrl = null;
+
+function cacheCanvasResult() {
+  _cachedDataUrl = canvas.toDataURL("image/png");
+}
+
 btnDownload.addEventListener("click", () => {
   const name   = selAgent?.name || "業務";
   const tmplLb = TEMPLATES[selTemplate]?.label || selTemplate;
-  const dataUrl = canvas.toDataURL("image/png");
 
-  // iOS Safari 不支援 <a download>，改為開新分頁讓使用者長按儲存
+  // 優先用快取（iOS 需要在點擊瞬間同步執行）
+  const dataUrl = _cachedDataUrl || canvas.toDataURL("image/png");
+
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   if (isIOS) {
-    const newTab = window.open();
-    if (newTab) {
-      newTab.document.write(`
-        <html><head><title>${name}_${tmplLb}</title>
-        <meta name="viewport" content="width=device-width,initial-scale=1">
-        <style>
-          body { margin:0; background:#111; display:flex; flex-direction:column;
-                 align-items:center; justify-content:center; min-height:100vh; }
-          img  { max-width:100%; border-radius:8px; }
-          p    { color:#fff; font-size:14px; margin-top:16px;
-                 font-family:sans-serif; opacity:.7; }
-        </style></head>
-        <body>
-          <img src="${dataUrl}">
-          <p>長按圖片 → 儲存到相片</p>
-        </body></html>
-      `);
-      newTab.document.close();
+    // iOS：直接在同一頁顯示圖片，使用者長按儲存
+    const w = window.open("", "_blank");
+    if (w) {
+      w.document.write(
+        "<html><head>" +
+        "<title>" + name + "_" + tmplLb + "</title>" +
+        "<meta name='viewport' content='width=device-width,initial-scale=1'>" +
+        "<style>body{margin:0;background:#111;text-align:center;padding:20px}" +
+        "img{max-width:100%;border-radius:8px}" +
+        "p{color:#fff;font-size:15px;margin-top:16px;font-family:sans-serif}</style>" +
+        "</head><body>" +
+        "<img src='" + dataUrl + "'>" +
+        "<p>長按圖片 → 儲存到相片</p>" +
+        "</body></html>"
+      );
+      w.document.close();
     } else {
-      // 若被封鎖彈出視窗，fallback 直接跳轉
-      window.location.href = dataUrl;
+      // 彈窗被封鎖：直接換頁到圖片
+      document.location.href = dataUrl;
     }
     return;
   }
 
-  // 其他瀏覽器：正常下載
+  // Android / 電腦：正常下載
   const link = document.createElement("a");
-  link.download = `${name}_${tmplLb}.png`;
+  link.download = name + "_" + tmplLb + ".png";
   link.href     = dataUrl;
   link.click();
 });
