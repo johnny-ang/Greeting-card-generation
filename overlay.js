@@ -25,11 +25,14 @@ const ctx = canvas.getContext("2d");
 })();
 
 // ── Line 內建瀏覽器偵測 ───────────────────────────────
-function detectLineBrowser() {
-  const ua = navigator.userAgent;
-  const isLine = /Line\//.test(ua);
-  if (!isLine) return;
+function isLineBrowser() {
+  return /Line\//.test(navigator.userAgent);
+}
 
+function detectLineBrowser() {
+  if (!isLineBrowser()) return;
+
+  // 顯示頂部綠色提示條
   const banner = document.getElementById("line-banner");
   if (banner) banner.style.display = "block";
 
@@ -38,6 +41,15 @@ function detectLineBrowser() {
     closeBtn.addEventListener("click", () => {
       banner.style.display = "none";
     });
+  }
+
+  // 攔截下載按鈕，改為顯示引導提示
+  const btn = document.getElementById("btn-download");
+  if (btn) {
+    btn.textContent = "⬇ 下載賀卡（請用瀏覽器開啟）";
+    btn.style.background = "#06C755";
+    btn.style.borderColor = "#06C755";
+    btn.style.color = "#fff";
   }
 }
 
@@ -404,37 +416,80 @@ btnDownload.addEventListener("click", () => {
   const name    = selAgent?.name || "業務";
   const tmplLb  = TEMPLATES[selTemplate]?.label || selTemplate;
   const dataUrl = _cachedDataUrl || canvas.toDataURL("image/png");
+  const ua      = navigator.userAgent;
 
-  // 偵測不支援 <a download> 的環境：iOS、Line、Facebook 內建瀏覽器
-  const ua = navigator.userAgent;
-  const isIOS  = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
-  const isLine = /Line\//.test(ua);
-  const isFB   = /FBAN|FBAV/.test(ua);
-  const needOverlay = isIOS || isLine || isFB;
+  // Line 內建瀏覽器：顯示引導 modal，要求用外部瀏覽器開啟
+  if (isLineBrowser()) {
+    showLineGuideModal();
+    return;
+  }
 
-  if (needOverlay) {
+  // iOS Safari
+  const isIOS = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+  if (isIOS) {
     createIOSOverlay();
     document.getElementById("ios-save-img").src = dataUrl;
     document.getElementById("ios-save-overlay").style.display = "flex";
     return;
   }
 
-  // 一般瀏覽器：測試是否支援 download 屬性
-  const testLink = document.createElement("a");
-  if (typeof testLink.download === "undefined") {
-    // 不支援 download：顯示遮罩
-    createIOSOverlay();
-    document.getElementById("ios-save-img").src = dataUrl;
-    document.getElementById("ios-save-overlay").style.display = "flex";
-    return;
-  }
-
-  // 正常下載
+  // 一般瀏覽器
   const link = document.createElement("a");
   link.download = name + "_" + tmplLb + ".png";
   link.href     = dataUrl;
   link.click();
 });
+
+function showLineGuideModal() {
+  // 建立引導 modal
+  if (document.getElementById("line-guide-modal")) {
+    document.getElementById("line-guide-modal").style.display = "flex";
+    return;
+  }
+
+  const modal = document.createElement("div");
+  modal.id = "line-guide-modal";
+  modal.style.cssText = [
+    "display:flex",
+    "position:fixed",
+    "inset:0",
+    "background:rgba(0,0,0,0.85)",
+    "z-index:9999",
+    "flex-direction:column",
+    "align-items:center",
+    "justify-content:center",
+    "padding:24px",
+    "box-sizing:border-box",
+    "text-align:center"
+  ].join(";");
+
+  modal.innerHTML = [
+    "<div style='background:#fff;border-radius:16px;padding:28px 24px;max-width:320px;width:100%'>",
+    "<div style='font-size:40px;margin-bottom:12px'>🌐</div>",
+    "<h2 style='font-size:18px;margin:0 0 12px;color:#1c1c1e;font-family:sans-serif'>請用瀏覽器開啟</h2>",
+    "<p style='font-size:14px;color:#555;line-height:1.6;margin:0 0 20px;font-family:sans-serif'>",
+    "Line 內建瀏覽器不支援圖片下載<br>請依以下步驟操作：</p>",
+    "<div style='background:#f5f5f5;border-radius:10px;padding:14px;margin-bottom:20px;text-align:left'>",
+    "<p style='margin:0;font-size:14px;font-family:sans-serif;line-height:2;color:#333'>",
+    "① 點右上角 <b>「···」</b><br>",
+    "② 選擇 <b>「用瀏覽器開啟」</b><br>",
+    "③ 再次點擊「下載賀卡」",
+    "</p></div>",
+    "<button id='line-guide-close' style='width:100%;padding:12px;border:none;border-radius:10px;",
+    "background:#06C755;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:sans-serif'>",
+    "我知道了</button>",
+    "</div>"
+  ].join("");
+
+  document.body.appendChild(modal);
+
+  document.getElementById("line-guide-close").addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) modal.style.display = "none";
+  });
+}
 
 // ── 工具函式 ──────────────────────────────────────────
 
