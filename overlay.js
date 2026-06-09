@@ -353,7 +353,7 @@ function createIOSOverlay() {
   ].join(";");
 
   const hint = document.createElement("p");
-  hint.textContent = "👆 長按圖片 → 儲存到相片";
+  hint.textContent = "👆 長按圖片，選擇「儲存圖片」或「下載圖片」";
   hint.style.cssText = "color:#fff;font-size:16px;margin:0 0 16px;font-family:sans-serif;text-align:center";
 
   const img = document.createElement("img");
@@ -383,19 +383,35 @@ function createIOSOverlay() {
 }
 
 btnDownload.addEventListener("click", () => {
-  const name   = selAgent?.name || "業務";
-  const tmplLb = TEMPLATES[selTemplate]?.label || selTemplate;
+  const name    = selAgent?.name || "業務";
+  const tmplLb  = TEMPLATES[selTemplate]?.label || selTemplate;
   const dataUrl = _cachedDataUrl || canvas.toDataURL("image/png");
 
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-  if (isIOS) {
+  // 偵測不支援 <a download> 的環境：iOS、Line、Facebook 內建瀏覽器
+  const ua = navigator.userAgent;
+  const isIOS  = /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
+  const isLine = /Line\//.test(ua);
+  const isFB   = /FBAN|FBAV/.test(ua);
+  const needOverlay = isIOS || isLine || isFB;
+
+  if (needOverlay) {
     createIOSOverlay();
     document.getElementById("ios-save-img").src = dataUrl;
     document.getElementById("ios-save-overlay").style.display = "flex";
     return;
   }
 
-  // Android / 電腦：正常下載
+  // 一般瀏覽器：測試是否支援 download 屬性
+  const testLink = document.createElement("a");
+  if (typeof testLink.download === "undefined") {
+    // 不支援 download：顯示遮罩
+    createIOSOverlay();
+    document.getElementById("ios-save-img").src = dataUrl;
+    document.getElementById("ios-save-overlay").style.display = "flex";
+    return;
+  }
+
+  // 正常下載
   const link = document.createElement("a");
   link.download = name + "_" + tmplLb + ".png";
   link.href     = dataUrl;
