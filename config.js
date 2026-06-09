@@ -1,51 +1,49 @@
 // ============================================================
-//  config.js — 套圖工具模板設定
-//  每張模板獨立設定座標、字體大小、顏色、字重
+//  config.js — 套圖工具模板設定 v2
+//  照片區域改為矩形（x, y, width, height）
 //  座標單位：像素（以 1040×1040 底圖為基準）
+//  文字 align 可設 "left" / "center" / "right"
 // ============================================================
 
 const TEMPLATES = {
 
   A: {
     label: "模板 A",
-    file: "templates/template_a.jpg",   // 底圖路徑（相對於 overlay.html）
+    file: "templates/template_a.jpg",
 
+    // 矩形照片：左上角座標 + 寬高
     photo: {
-      x: 520,        // 圓形中心 X
-      y: 300,        // 圓形中心 Y
-      radius: 120,   // 圓形半徑（px）
+      x: 30,        // 白框左邊緣
+      y: 40,        // 白框上邊緣
+      width: 390,   // 白框寬度
+      height: 620,  // 白框高度
     },
 
     name: {
-      x: 520,        // 文字中心 X（text-anchor: center）
-      y: 520,        // 文字基線 Y
-      size: 52,      // 字體大小（px）
-      weight: "700", // "400" = Regular, "700" = Bold
+      x: 215,       // 文字水平中心（白框中心）
+      y: 720,       // 文字垂直中心
+      size: 52,
+      weight: "700",
       color: "#FFFFFF",
+      align: "center",
     },
 
     phone: {
-      x: 520,
-      y: 590,
-      size: 34,
+      x: 520,       // 電話橫跨全寬，置中
+      y: 820,
+      size: 36,
       weight: "400",
       color: "#FFFFFF",
-    },
-
-    brand: {
-      x: 520,
-      y: 660,
-      size: 28,
-      weight: "400",
-      color: "#FFEEAA",
+      align: "center",
     },
 
     branch: {
-      x: 520,
-      y: 700,
-      size: 24,
+      x: 700,       // 底部黃條右側灰框中心
+      y: 975,
+      size: 28,
       weight: "400",
-      color: "#FFEEAA",
+      color: "#333333",
+      align: "center",
     },
   },
 
@@ -54,92 +52,83 @@ const TEMPLATES = {
     file: "templates/template_b.jpg",
 
     photo: {
-      x: 200,
-      y: 520,
-      radius: 140,
+      x: 30,
+      y: 40,
+      width: 390,
+      height: 620,
     },
 
     name: {
-      x: 600,
-      y: 440,
-      size: 56,
+      x: 215,
+      y: 720,
+      size: 52,
       weight: "700",
-      color: "#1A1A2E",
+      color: "#FFFFFF",
+      align: "center",
     },
 
     phone: {
-      x: 600,
-      y: 510,
+      x: 520,
+      y: 820,
       size: 36,
       weight: "400",
-      color: "#1A1A2E",
-    },
-
-    brand: {
-      x: 600,
-      y: 570,
-      size: 28,
-      weight: "400",
-      color: "#4A4A6A",
+      color: "#FFFFFF",
+      align: "center",
     },
 
     branch: {
-      x: 600,
-      y: 610,
-      size: 24,
+      x: 700,
+      y: 975,
+      size: 28,
       weight: "400",
-      color: "#4A4A6A",
+      color: "#333333",
+      align: "center",
     },
   },
 
   C: {
     label: "模板 C",
-    file: "templates/template_c.jpg",
+    file: "templates/template_C.png",
 
     photo: {
-      x: 520,
-      y: 220,
-      radius: 100,
+      x: 30,
+      y: 40,
+      width: 390,
+      height: 620,
     },
 
     name: {
-      x: 520,
-      y: 400,
-      size: 48,
+      x: 215,
+      y: 720,
+      size: 52,
       weight: "700",
-      color: "#2D2D2D",
+      color: "#FFFFFF",
+      align: "center",
     },
 
     phone: {
       x: 520,
-      y: 460,
-      size: 32,
+      y: 820,
+      size: 36,
       weight: "400",
-      color: "#2D2D2D",
-    },
-
-    brand: {
-      x: 520,
-      y: 520,
-      size: 26,
-      weight: "400",
-      color: "#888888",
+      color: "#FFFFFF",
+      align: "center",
     },
 
     branch: {
-      x: 520,
-      y: 556,
-      size: 22,
+      x: 700,
+      y: 975,
+      size: 28,
       weight: "400",
-      color: "#888888",
+      color: "#333333",
+      align: "center",
     },
   },
 
 };
 
-// API 網址（不需修改）
+// API 網址
 const API_URL = "https://script.google.com/macros/s/AKfycbw-yw0sqW_PHb0AAEBGDEE1rB5kxxIVSLETWjjLVKnLmn0OZQ-zPn6y6-kBXHVtQvuf/exec";
 
-// 字體（不需修改）
+// 字體
 const FONT_FAMILY = "Jf Open粉圓";
-const FONT_URL    = "https://fonts.googleapis.com/css2?family=Jf+Open+Maozi:wght@400;700&display=swap";
