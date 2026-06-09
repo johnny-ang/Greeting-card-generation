@@ -153,7 +153,7 @@ function checkReady() {
   btnGenerate.disabled = !(selAgent && selTemplate);
 }
 
-// ── 產生套圖 ──────────────────────────────────────────
+// ── 產生賀卡 ──────────────────────────────────────────
 btnGenerate.addEventListener("click", generateImage);
 
 async function generateImage() {
