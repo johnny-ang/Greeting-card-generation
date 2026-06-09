@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>套圖工具</title>
+<title>喆禮電子賀卡生成工具</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jf+Open+Maozi:wght@400;700&display=swap" rel="stylesheet">
@@ -309,7 +309,7 @@
 <body>
 
 <header>
-  <h1>🎨 套圖工具</h1>
+  <h1>🎨 喆禮電子賀卡生成工具</h1>
   <p>選擇業務 → 選模板 → 產生圖片下載</p>
 </header>
 
@@ -319,7 +319,7 @@
   <div>
     <!-- 搜尋業務 -->
     <div class="panel">
-      <div class="section-title">① 選擇業務</div>
+      <div class="section-title">① 輸入姓名</div>
       <div class="search-wrap">
         <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
@@ -340,12 +340,12 @@
 
     <!-- 選模板 -->
     <div class="panel">
-      <div class="section-title">② 選擇模板</div>
+      <div class="section-title">② 選擇底圖</div>
       <div class="tmpl-grid" id="tmpl-grid"></div>
     </div>
 
     <!-- 產生 -->
-    <button id="btn-generate" disabled>產生套圖</button>
+    <button id="btn-generate" disabled>產生賀卡</button>
     <div id="status-bar"></div>
   </div>
 
@@ -359,7 +359,7 @@
           <circle cx="8.5" cy="8.5" r="1.5"/>
           <path d="M21 15l-5-5L5 21"/>
         </svg>
-        <p>完成左側設定後<br>點擊「產生套圖」</p>
+        <p>完成左側設定後<br>點擊「產生賀卡」</p>
       </div>
       <div id="preview-loading">
         <div class="spinner"></div>
@@ -367,7 +367,7 @@
       </div>
       <canvas id="preview-canvas"></canvas>
     </div>
-    <button id="btn-download">⬇ 下載 PNG</button>
+    <button id="btn-download">⬇ 下載 賀卡</button>
   </div>
 
 </div>
