@@ -1,4 +1,4 @@
-// overlay.js — 套圖工具主邏輯 v2（矩形照片）
+// overlay.js — 套圖工具主邏輯 v3（矩形照片 + letterSpacing + maxWidth）
 
 let allAgents   = [];
 let selAgent    = null;
@@ -176,7 +176,7 @@ async function generateImage() {
     ctx.drawImage(bg, 0, 0, 1040, 1040);
     setStatus("套入業務資料中…");
 
-    // 套入業務照片（矩形裁切）
+    // 照片（矩形）
     if (selAgent.photo_url) {
       try {
         const photo = await loadImage(selAgent.photo_url);
@@ -188,7 +188,7 @@ async function generateImage() {
       drawRectPlaceholder(tmpl.photo, selAgent.name);
     }
 
-    // 套入文字（name / phone / branch）
+    // 文字欄位
     const fields = [
       { cfg: tmpl.name,   text: selAgent.name   || "" },
       { cfg: tmpl.phone,  text: selAgent.phone  || "" },
@@ -197,13 +197,7 @@ async function generateImage() {
 
     fields.forEach(({ cfg, text }) => {
       if (!cfg || !text) return;
-      ctx.save();
-      ctx.font         = `${cfg.weight} ${cfg.size}px "${FONT_FAMILY}", "Noto Sans TC", sans-serif`;
-      ctx.fillStyle    = cfg.color;
-      ctx.textAlign    = cfg.align || "center";
-      ctx.textBaseline = "middle";
-      ctx.fillText(text, cfg.x, cfg.y);
-      ctx.restore();
+      drawText(cfg, text);
     });
 
     loadingEl.style.display   = "none";
@@ -221,7 +215,67 @@ async function generateImage() {
   }
 }
 
-// ── 矩形照片（等比例置中裁切填滿）────────────────────
+// ── 文字繪製（支援 letterSpacing + maxWidth）─────────
+function drawText(cfg, text) {
+  const {
+    x, y, size, weight, color,
+    align = "center",
+    letterSpacing = 0,
+    maxWidth = null,
+  } = cfg;
+
+  ctx.save();
+  ctx.font         = `${weight} ${size}px "${FONT_FAMILY}", "Noto Sans TC", sans-serif`;
+  ctx.fillStyle    = color;
+  ctx.textBaseline = "middle";
+
+  if (letterSpacing === 0) {
+    // 無間距：直接用原生 fillText
+    ctx.textAlign = align;
+    if (maxWidth) {
+      ctx.fillText(text, x, y, maxWidth);
+    } else {
+      ctx.fillText(text, x, y);
+    }
+  } else {
+    // 有間距：逐字繪製
+    const chars = [...text];
+    const charWidths = chars.map(ch => ctx.measureText(ch).width);
+    const totalWidth = charWidths.reduce((a, b) => a + b, 0)
+                     + letterSpacing * (chars.length - 1);
+
+    // 若超出 maxWidth，等比縮小整體
+    let scale = 1;
+    if (maxWidth && totalWidth > maxWidth) {
+      scale = maxWidth / totalWidth;
+    }
+
+    // 計算起始 x
+    let startX;
+    if (align === "center") {
+      startX = x - (totalWidth * scale) / 2;
+    } else if (align === "right") {
+      startX = x - totalWidth * scale;
+    } else {
+      startX = x; // left
+    }
+
+    ctx.textAlign = "left";
+    let curX = startX;
+    chars.forEach((ch, i) => {
+      ctx.save();
+      ctx.translate(curX, y);
+      if (scale !== 1) ctx.scale(scale, 1);
+      ctx.fillText(ch, 0, 0);
+      ctx.restore();
+      curX += (charWidths[i] + letterSpacing) * scale;
+    });
+  }
+
+  ctx.restore();
+}
+
+// ── 矩形照片 ─────────────────────────────────────────
 function drawRectPhoto(img, { x, y, width, height }) {
   ctx.save();
   ctx.beginPath();
