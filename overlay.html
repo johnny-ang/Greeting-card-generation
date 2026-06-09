@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>套圖工具</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jf+Open+Maozi:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #F5F4F0;
+    --surface: #FFFFFF;
+    --border:  #E2E0DA;
+    --accent:  #5B5BD6;
+    --accent2: #7C7CE8;
+    --text:    #1C1C1E;
+    --muted:   #6E6E73;
+    --radius:  12px;
+    --shadow:  0 2px 12px rgba(0,0,0,0.08);
+  }
+
+  body {
+    font-family: 'Jf Open粉圓', 'Noto Sans TC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: .02em;
+    color: var(--accent);
+  }
+  header p {
+    margin-top: 6px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .layout {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  @media (max-width: 780px) {
+    .layout { grid-template-columns: 1fr; }
+  }
+
+  /* ── Panel ── */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+  .panel + .panel { margin-top: 16px; }
+
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  /* ── Search ── */
+  .search-wrap {
+    position: relative;
+  }
+  .search-wrap input {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px 10px 38px;
+    font-size: 15px;
+    font-family: inherit;
+    background: var(--bg);
+    color: var(--text);
+    transition: border-color .15s;
+    outline: none;
+  }
+  .search-wrap input:focus { border-color: var(--accent); }
+  .search-wrap svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: .4;
+  }
+
+  #agent-list {
+    margin-top: 8px;
+    max-height: 260px;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: none;
+  }
+  .agent-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: background .1s;
+    border-bottom: 1px solid var(--border);
+  }
+  .agent-item:last-child { border-bottom: none; }
+  .agent-item:hover { background: #F0EFFE; }
+  .agent-item.selected { background: #EAE9FD; }
+  .agent-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+  .agent-avatar-placeholder {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .agent-info strong { display: block; font-size: 14px; }
+  .agent-info span   { font-size: 12px; color: var(--muted); }
+
+  /* ── Selected card ── */
+  #selected-card {
+    display: none;
+    margin-top: 12px;
+    background: #EAE9FD;
+    border: 1.5px solid var(--accent2);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+  #selected-card .sc-name { font-weight: 700; font-size: 16px; color: var(--accent); }
+  #selected-card .sc-row  { margin-top: 3px; color: var(--muted); }
+
+  /* ── Template picker ── */
+  .tmpl-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .tmpl-btn {
+    border: 2px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 6px 8px;
+    cursor: pointer;
+    background: var(--bg);
+    text-align: center;
+    transition: border-color .15s, background .15s;
+    font-family: inherit;
+  }
+  .tmpl-btn img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 6px;
+    display: block;
+    background: var(--border);
+  }
+  .tmpl-btn .tmpl-placeholder {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #e0dff8, #c8c7f0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: var(--accent);
+  }
+  .tmpl-btn span { display: block; font-size: 12px; color: var(--muted); margin-top: 6px; }
+  .tmpl-btn:hover { border-color: var(--accent2); background: #F5F4FF; }
+  .tmpl-btn.active { border-color: var(--accent); background: #EEEEFF; }
+
+  /* ── Generate button ── */
+  #btn-generate {
+    width: 100%;
+    margin-top: 20px;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background .15s, opacity .15s;
+  }
+  #btn-generate:hover   { background: #4747c2; }
+  #btn-generate:disabled { opacity: .45; cursor: not-allowed; }
+
+  /* ── Preview area ── */
+  .preview-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    min-height: 520px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #preview-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    border-radius: 8px;
+    min-height: 400px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #preview-canvas {
+    max-width: 100%;
+    max-height: 600px;
+    border-radius: 4px;
+    display: none;
+  }
+
+  .preview-placeholder {
+    text-align: center;
+    color: var(--muted);
+  }
+  .preview-placeholder svg { opacity: .3; margin-bottom: 12px; }
+  .preview-placeholder p   { font-size: 14px; }
+
+  #preview-loading {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .spinner {
+    width: 36px; height: 36px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  #btn-download {
+    display: none;
+    margin-top: 16px;
+    width: 100%;
+    padding: 12px;
+    border: 2px solid var(--accent);
+    border-radius: 10px;
+    background: transparent;
+    color: var(--accent);
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+  }
+  #btn-download:hover { background: var(--accent); color: #fff; }
+
+  /* ── Status ── */
+  #status-bar {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--muted);
+    min-height: 18px;
+    text-align: center;
+  }
+  #status-bar.error { color: #d44; }
+
+  /* ── CORS proxy notice ── */
+  .notice {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: #FFF8E1;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #7A6000;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🎨 套圖工具</h1>
+  <p>選擇業務 → 選模板 → 產生圖片下載</p>
+</header>
+
+<div class="layout">
+
+  <!-- 左欄：操作面板 -->
+  <div>
+    <!-- 搜尋業務 -->
+    <div class="panel">
+      <div class="section-title">① 選擇業務</div>
+      <div class="search-wrap">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+        </svg>
+        <input type="text" id="search-input" placeholder="輸入姓名或工號搜尋…" autocomplete="off">
+      </div>
+      <div id="agent-list"></div>
+      <div id="selected-card">
+        <div class="sc-name" id="sc-name"></div>
+        <div class="sc-row" id="sc-phone"></div>
+        <div class="sc-row" id="sc-brand"></div>
+        <div class="sc-row" id="sc-branch"></div>
+      </div>
+      <div class="notice" id="cors-notice">
+        ⚠️ 載入業務資料失敗，可能為跨域限制。請確認 Apps Script 已部署為「任何人可存取」。
+      </div>
+    </div>
+
+    <!-- 選模板 -->
+    <div class="panel">
+      <div class="section-title">② 選擇模板</div>
+      <div class="tmpl-grid" id="tmpl-grid"></div>
+    </div>
+
+    <!-- 產生 -->
+    <button id="btn-generate" disabled>產生套圖</button>
+    <div id="status-bar"></div>
+  </div>
+
+  <!-- 右欄：預覽 -->
+  <div class="preview-panel">
+    <div class="section-title">預覽</div>
+    <div id="preview-wrap">
+      <div class="preview-placeholder" id="preview-placeholder">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <path d="M21 15l-5-5L5 21"/>
+        </svg>
+        <p>完成左側設定後<br>點擊「產生套圖」</p>
+      </div>
+      <div id="preview-loading">
+        <div class="spinner"></div>
+        <span>合成中，請稍候…</span>
+      </div>
+      <canvas id="preview-canvas"></canvas>
+    </div>
+    <button id="btn-download">⬇ 下載 PNG</button>
+  </div>
+
+</div>
+
+<script src="config.js"></script>
+<script src="overlay.js"></script>
+</body>
+</html>
