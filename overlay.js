@@ -179,7 +179,7 @@ async function generateImage() {
     // 照片（矩形）
     if (selAgent.photo_url) {
       try {
-        const photo = await loadImage(selAgent.photo_url);
+        const photo = await loadPhotoImage(selAgent.photo_url);
         drawRectPhoto(photo, tmpl.photo);
       } catch {
         drawRectPlaceholder(tmpl.photo, selAgent.name);
@@ -418,17 +418,28 @@ function normalizeDriveUrl(url) {
   return url;
 }
 
+// 載入底圖（本地路徑，不需轉換）
 function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload  = () => resolve(img);
+    img.onerror = () => reject(new Error("底圖載入失敗：" + src));
+    img.src = src;
+  });
+}
+
+// 載入業務照片（Google Drive，需轉換 + crossOrigin）
+function loadPhotoImage(src) {
   const url = normalizeDriveUrl(src);
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.onload  = () => resolve(img);
     img.onerror = () => {
-      // 第一次失敗：嘗試加時間戳繞過快取
       const img2 = new Image();
+      img2.crossOrigin = "anonymous";
       img2.onload  = () => resolve(img2);
-      img2.onerror = () => reject(new Error("照片載入失敗，請確認 Google Drive 共用權限為「知道連結的人」"));
+      img2.onerror = () => reject(new Error("照片載入失敗"));
       img2.src = url + (url.includes("?") ? "&t=" : "?t=") + Date.now();
     };
     img.src = url;
