@@ -329,9 +329,40 @@ function drawRectPlaceholder({ x, y, width, height }, name) {
 btnDownload.addEventListener("click", () => {
   const name   = selAgent?.name || "業務";
   const tmplLb = TEMPLATES[selTemplate]?.label || selTemplate;
-  const link   = document.createElement("a");
+  const dataUrl = canvas.toDataURL("image/png");
+
+  // iOS Safari 不支援 <a download>，改為開新分頁讓使用者長按儲存
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  if (isIOS) {
+    const newTab = window.open();
+    if (newTab) {
+      newTab.document.write(`
+        <html><head><title>${name}_${tmplLb}</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <style>
+          body { margin:0; background:#111; display:flex; flex-direction:column;
+                 align-items:center; justify-content:center; min-height:100vh; }
+          img  { max-width:100%; border-radius:8px; }
+          p    { color:#fff; font-size:14px; margin-top:16px;
+                 font-family:sans-serif; opacity:.7; }
+        </style></head>
+        <body>
+          <img src="${dataUrl}">
+          <p>長按圖片 → 儲存到相片</p>
+        </body></html>
+      `);
+      newTab.document.close();
+    } else {
+      // 若被封鎖彈出視窗，fallback 直接跳轉
+      window.location.href = dataUrl;
+    }
+    return;
+  }
+
+  // 其他瀏覽器：正常下載
+  const link = document.createElement("a");
   link.download = `${name}_${tmplLb}.png`;
-  link.href     = canvas.toDataURL("image/png");
+  link.href     = dataUrl;
   link.click();
 });
 
