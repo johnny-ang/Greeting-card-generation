@@ -215,10 +215,12 @@ async function generateImage() {
   }
 }
 
-// ── 文字繪製（支援 letterSpacing + maxWidth）─────────
+// ── 文字繪製（支援 letterSpacing + maxWidth + stroke）─
 function drawText(cfg, text) {
   const {
     x, y, size, weight, color,
+    strokeColor = null,
+    strokeWidth = 0,
     align = "center",
     letterSpacing = 0,
     maxWidth = null,
@@ -226,41 +228,63 @@ function drawText(cfg, text) {
 
   ctx.save();
   ctx.font         = `${weight} ${size}px "${FONT_FAMILY}", "Noto Sans TC", sans-serif`;
-  ctx.fillStyle    = color;
   ctx.textBaseline = "middle";
 
+  if (strokeColor && strokeWidth > 0) {
+    ctx.strokeStyle = strokeColor;
+    ctx.lineWidth   = strokeWidth * 2;
+    ctx.lineJoin    = "round";
+  }
+
   if (letterSpacing === 0) {
-    // 無間距：直接用原生 fillText
     ctx.textAlign = align;
-    if (maxWidth) {
-      ctx.fillText(text, x, y, maxWidth);
-    } else {
-      ctx.fillText(text, x, y);
+    // 先畫框線，再畫填色（確保框線在底層）
+    if (strokeColor && strokeWidth > 0) {
+      if (maxWidth) ctx.strokeText(text, x, y, maxWidth);
+      else          ctx.strokeText(text, x, y);
     }
+    ctx.fillStyle = color;
+    if (maxWidth) ctx.fillText(text, x, y, maxWidth);
+    else          ctx.fillText(text, x, y);
+
   } else {
-    // 有間距：逐字繪製
+    // 逐字繪製（letterSpacing 模式）
     const chars = [...text];
     const charWidths = chars.map(ch => ctx.measureText(ch).width);
     const totalWidth = charWidths.reduce((a, b) => a + b, 0)
                      + letterSpacing * (chars.length - 1);
 
-    // 若超出 maxWidth，等比縮小整體
     let scale = 1;
     if (maxWidth && totalWidth > maxWidth) {
       scale = maxWidth / totalWidth;
     }
 
-    // 計算起始 x
     let startX;
     if (align === "center") {
       startX = x - (totalWidth * scale) / 2;
     } else if (align === "right") {
       startX = x - totalWidth * scale;
     } else {
-      startX = x; // left
+      startX = x;
     }
 
     ctx.textAlign = "left";
+
+    // 先全部畫框線
+    if (strokeColor && strokeWidth > 0) {
+      let curX = startX;
+      chars.forEach((ch, i) => {
+        ctx.save();
+        ctx.translate(curX, y);
+        if (scale !== 1) ctx.scale(scale, 1);
+        ctx.strokeText(ch, 0, 0);
+        ctx.restore();
+        curX += (charWidths[i] + letterSpacing) * scale;
+      });
+    }
+
+    // 再全部畫填色
+    ctx.fillStyle = color;
     let curX = startX;
     chars.forEach((ch, i) => {
       ctx.save();
@@ -312,13 +336,35 @@ btnDownload.addEventListener("click", () => {
 });
 
 // ── 工具函式 ──────────────────────────────────────────
+
+// Google Drive 連結轉成 thumbnail 格式（較少跨域限制）
+function normalizeDriveUrl(url) {
+  if (!url) return url;
+  const ucMatch = url.match(/uc\?(?:export=view&)?id=([a-zA-Z0-9_-]+)/);
+  if (ucMatch) {
+    return `https://drive.google.com/thumbnail?id=${ucMatch[1]}&sz=w800`;
+  }
+  const fileMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if (fileMatch) {
+    return `https://drive.google.com/thumbnail?id=${fileMatch[1]}&sz=w800`;
+  }
+  return url;
+}
+
 function loadImage(src) {
+  const url = normalizeDriveUrl(src);
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.onload  = () => resolve(img);
-    img.onerror = () => reject(new Error("圖片載入失敗：" + src));
-    img.src     = src;
+    img.onerror = () => {
+      // 第一次失敗：嘗試加時間戳繞過快取
+      const img2 = new Image();
+      img2.onload  = () => resolve(img2);
+      img2.onerror = () => reject(new Error("照片載入失敗，請確認 Google Drive 共用權限為「知道連結的人」"));
+      img2.src = url + (url.includes("?") ? "&t=" : "?t=") + Date.now();
+    };
+    img.src = url;
   });
 }
 
