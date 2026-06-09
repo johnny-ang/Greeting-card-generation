@@ -19,7 +19,11 @@ const corsNotice   = document.getElementById("cors-notice");
 const ctx = canvas.getContext("2d");
 
 (async function init() {
-  detectLineBrowser();
+  // Line 環境：顯示全螢幕引導，阻止繼續使用
+  if (isLineBrowser()) {
+    showLineBlockScreen();
+    return; // 不初始化工具
+  }
   buildTemplatePicker();
   await loadAgents();
 })();
@@ -29,28 +33,74 @@ function isLineBrowser() {
   return /Line\//.test(navigator.userAgent);
 }
 
-function detectLineBrowser() {
-  if (!isLineBrowser()) return;
+function showLineBlockScreen() {
+  const currentUrl = location.href;
+  const isAndroid  = /Android/.test(navigator.userAgent);
+  const isIOS      = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
-  // 顯示頂部綠色提示條
-  const banner = document.getElementById("line-banner");
-  if (banner) banner.style.display = "block";
-
-  const closeBtn = document.getElementById("line-banner-close");
-  if (closeBtn) {
-    closeBtn.addEventListener("click", () => {
-      banner.style.display = "none";
-    });
+  // ── 嘗試直接喚起外部瀏覽器 ──────────────────────────
+  if (isAndroid) {
+    // Android：intent scheme 喚起 Chrome
+    const intent = "intent://" + currentUrl.replace(/^https?:\/\//, "") +
+      "#Intent;scheme=https;package=com.android.chrome;end";
+    setTimeout(() => { location.href = intent; }, 100);
+  } else if (isIOS) {
+    // iOS：嘗試 Chrome，失敗後嘗試 Safari（Safari 無需特殊 scheme）
+    const chromeUrl = currentUrl.replace(/^https/, "googlechrome")
+                                .replace(/^http/, "googlechrome");
+    setTimeout(() => { location.href = chromeUrl; }, 100);
   }
 
-  // 攔截下載按鈕，改為顯示引導提示
-  const btn = document.getElementById("btn-download");
-  if (btn) {
-    btn.textContent = "⬇ 下載賀卡（請用瀏覽器開啟）";
-    btn.style.background = "#06C755";
-    btn.style.borderColor = "#06C755";
-    btn.style.color = "#fff";
-  }
+  // ── 顯示備用引導畫面（跳轉失敗或未安裝時看到）────────
+  const screen = document.createElement("div");
+  screen.id = "line-block-screen";
+  screen.style.cssText = [
+    "position:fixed", "inset:0", "background:#fff", "z-index:99999",
+    "display:flex", "flex-direction:column", "align-items:center",
+    "justify-content:center", "padding:32px 24px",
+    "box-sizing:border-box", "text-align:center", "font-family:sans-serif"
+  ].join(";");
+
+  // 按鈕區：依裝置顯示對應選項
+  const btnAndroid = isAndroid ? [
+    "<button onclick="location.href='intent://" + currentUrl.replace(/^https?:\/\//, "") +
+    "#Intent;scheme=https;package=com.android.chrome;end'" ",
+    "style='width:100%;padding:14px;border:none;border-radius:12px;",
+    "background:#1A73E8;color:#fff;font-size:15px;font-weight:700;",
+    "cursor:pointer;margin-bottom:10px'>",
+    "🔵 用 Chrome 開啟</button>"
+  ].join("") : "";
+
+  const btnIOS = isIOS ? [
+    "<button onclick="location.href='" + currentUrl.replace(/^https/, "googlechrome").replace(/^http/, "googlechrome") + "'" ",
+    "style='width:100%;padding:14px;border:none;border-radius:12px;",
+    "background:#1A73E8;color:#fff;font-size:15px;font-weight:700;",
+    "cursor:pointer;margin-bottom:10px'>",
+    "🔵 用 Chrome 開啟</button>",
+    "<button onclick="location.href='" + currentUrl.replace(/^https/, "x-web-search") + "'" ",
+    "style='width:100%;padding:14px;border:none;border-radius:12px;",
+    "background:#000;color:#fff;font-size:15px;font-weight:700;cursor:pointer'>",
+    "⚫ 用 Safari 開啟</button>"
+  ].join("") : "";
+
+  const btnFallback = (!isAndroid && !isIOS) ? "" : "";
+
+  screen.innerHTML = [
+    "<div style='font-size:52px;margin-bottom:14px'>🌐</div>",
+    "<h1 style='font-size:20px;font-weight:700;color:#1c1c1e;margin:0 0 8px'>正在開啟瀏覽器…</h1>",
+    "<p style='font-size:14px;color:#777;line-height:1.6;margin:0 0 24px'>",
+    "若未自動跳轉，請點下方按鈕<br>或手動選擇「用瀏覽器開啟」</p>",
+    "<div style='width:100%;max-width:300px;margin-bottom:20px'>",
+    btnAndroid, btnIOS, btnFallback,
+    "</div>",
+    "<div style='background:#f5f5f5;border-radius:12px;padding:16px 20px;",
+    "text-align:left;width:100%;max-width:300px;box-sizing:border-box'>",
+    "<p style='margin:0;font-size:13px;line-height:2;color:#555'>",
+    "手動方式：點右上角 <b>「···」</b><br>→ 選 <b>「用瀏覽器開啟」</b></p>",
+    "</div>"
+  ].join("");
+
+  document.body.appendChild(screen);
 }
 
 // ── 模板選擇器 ────────────────────────────────────────
