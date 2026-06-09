@@ -327,42 +327,71 @@ function drawRectPlaceholder({ x, y, width, height }, name) {
 }
 
 // ── 下載 ─────────────────────────────────────────────
-// iOS 專用：產生完圖後預先存好 dataUrl，點擊時直接跳轉
 let _cachedDataUrl = null;
 
 function cacheCanvasResult() {
   _cachedDataUrl = canvas.toDataURL("image/png");
 }
 
+// iOS 長按遮罩層（建立一次，重複使用）
+function createIOSOverlay() {
+  if (document.getElementById("ios-save-overlay")) return;
+
+  const overlay = document.createElement("div");
+  overlay.id = "ios-save-overlay";
+  overlay.style.cssText = [
+    "display:none",
+    "position:fixed",
+    "inset:0",
+    "background:rgba(0,0,0,0.92)",
+    "z-index:9999",
+    "flex-direction:column",
+    "align-items:center",
+    "justify-content:center",
+    "padding:20px",
+    "box-sizing:border-box"
+  ].join(";");
+
+  const hint = document.createElement("p");
+  hint.textContent = "👆 長按圖片 → 儲存到相片";
+  hint.style.cssText = "color:#fff;font-size:16px;margin:0 0 16px;font-family:sans-serif;text-align:center";
+
+  const img = document.createElement("img");
+  img.id = "ios-save-img";
+  img.style.cssText = "max-width:100%;max-height:75vh;border-radius:8px;display:block";
+
+  const closeBtn = document.createElement("button");
+  closeBtn.textContent = "✕ 關閉";
+  closeBtn.style.cssText = [
+    "margin-top:20px",
+    "padding:10px 28px",
+    "border:1.5px solid rgba(255,255,255,0.4)",
+    "border-radius:8px",
+    "background:transparent",
+    "color:#fff",
+    "font-size:15px",
+    "cursor:pointer"
+  ].join(";");
+  closeBtn.addEventListener("click", () => {
+    overlay.style.display = "none";
+  });
+
+  overlay.appendChild(hint);
+  overlay.appendChild(img);
+  overlay.appendChild(closeBtn);
+  document.body.appendChild(overlay);
+}
+
 btnDownload.addEventListener("click", () => {
   const name   = selAgent?.name || "業務";
   const tmplLb = TEMPLATES[selTemplate]?.label || selTemplate;
-
-  // 優先用快取（iOS 需要在點擊瞬間同步執行）
   const dataUrl = _cachedDataUrl || canvas.toDataURL("image/png");
 
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   if (isIOS) {
-    // iOS：直接在同一頁顯示圖片，使用者長按儲存
-    const w = window.open("", "_blank");
-    if (w) {
-      w.document.write(
-        "<html><head>" +
-        "<title>" + name + "_" + tmplLb + "</title>" +
-        "<meta name='viewport' content='width=device-width,initial-scale=1'>" +
-        "<style>body{margin:0;background:#111;text-align:center;padding:20px}" +
-        "img{max-width:100%;border-radius:8px}" +
-        "p{color:#fff;font-size:15px;margin-top:16px;font-family:sans-serif}</style>" +
-        "</head><body>" +
-        "<img src='" + dataUrl + "'>" +
-        "<p>長按圖片 → 儲存到相片</p>" +
-        "</body></html>"
-      );
-      w.document.close();
-    } else {
-      // 彈窗被封鎖：直接換頁到圖片
-      document.location.href = dataUrl;
-    }
+    createIOSOverlay();
+    document.getElementById("ios-save-img").src = dataUrl;
+    document.getElementById("ios-save-overlay").style.display = "flex";
     return;
   }
 
