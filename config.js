@@ -9,14 +9,14 @@ const TEMPLATES = {
     file: "templates/template_a.jpg",
 
     photo: {
-      x: 230,
+      x: 130,
       y: 40,
       width: 390,
       height: 620,
     },
 
     name: {
-      x: 415,
+      x: 315,
       y: 720,
       size: 85,
       weight: "700",
@@ -29,7 +29,7 @@ const TEMPLATES = {
     },
 
     phone: {
-      x: 230,
+      x: 130,
       y: 820,
       size: 60,
       weight: "700",
@@ -58,14 +58,14 @@ const TEMPLATES = {
     file: "templates/template_b.jpg",
 
     photo: {
-      x: 230,
+      x: 130,
       y: 40,
       width: 390,
       height: 620,
     },
 
     name: {
-      x: 415,
+      x: 315,
       y: 720,
       size: 85,
       weight: "700",
@@ -78,7 +78,7 @@ const TEMPLATES = {
     },
 
     phone: {
-      x: 230,
+      x: 130,
       y: 820,
       size: 60,
       weight: "700",
@@ -104,17 +104,17 @@ const TEMPLATES = {
 
   C: {
     label: "喆禮團隊",
-    file: "templates/template_C.png",
+    file: "templates/template_c.jpg",
 
     photo: {
-      x: 230,
+      x: 130,
       y: 40,
       width: 390,
       height: 620,
     },
 
     name: {
-      x: 415,
+      x: 315,
       y: 720,
       size: 85,
       weight: "700",
@@ -127,7 +127,7 @@ const TEMPLATES = {
     },
 
     phone: {
-      x: 230,
+      x: 130,
       y: 820,
       size: 60,
       weight: "700",
