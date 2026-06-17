@@ -151,6 +151,55 @@ const TEMPLATES = {
     },
   },
 
+  D: {
+    label: "新青安2.0",
+    file: "templates/template_d.jpg",
+
+    photo: {
+      x: 130,
+      y: 40,
+      width: 390,
+      height: 620,
+    },
+
+    name: {
+      x: 315,
+      y: 720,
+      size: 85,
+      weight: "700",
+      color: "#FFFFFF",
+      strokeColor: "#444444",
+      strokeWidth: 12,
+      align: "center",
+      letterSpacing: 8,
+      maxWidth: 390,
+    },
+
+    phone: {
+      x: 130,
+      y: 820,
+      size: 60,
+      weight: "700",
+      color: "#FFFFFF",
+      strokeColor: "#444444",
+      strokeWidth: 10,
+      align: "left",
+      letterSpacing: 6,
+    },
+
+    branch: {
+      x: 700,
+      y: 970,
+      size: 48,
+      weight: "700",
+      color: "#FFFFFF",
+      strokeColor: "#444444",
+      strokeWidth: 8,
+      align: "center",
+      letterSpacing: 4,
+    },
+  },
+
 };
 
 const API_URL = "https://script.google.com/macros/s/AKfycbw-yw0sqW_PHb0AAEBGDEE1rB5kxxIVSLETWjjLVKnLmn0OZQ-zPn6y6-kBXHVtQvuf/exec";
