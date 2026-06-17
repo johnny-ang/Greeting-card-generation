@@ -157,9 +157,9 @@ const TEMPLATES = {
 
     photo: {
       x: 734,        // 1040 - 306 = 734，靠右貼合
-      y: 640,        // 1040 - 400 = 640，貼合底線
+      y: 610,        // 1040 - 430 = 610，貼合底線
       width: 306,
-      height: 400,
+      height: 430,
       fit: "contain",
     },
 
@@ -170,7 +170,8 @@ const TEMPLATES = {
       weight: "700",
       color: "#1A3A6B",
       strokeColor: "#FFFFFF",
-      strokeWidth: 8,
+      strokeWidth: 6,
+      glow: false,      // 硬邊描邊，非光暈
       align: "left",
       letterSpacing: 20,
       maxWidth: 280,
