@@ -310,7 +310,7 @@ function initTool() {
       ctx.textBaseline = "middle";
 
       const hasStroke = strokeColor && strokeWidth > 0;
-      const isGlow = hasStroke && strokeColor === "#FFFFFF";
+      const isGlow = hasStroke && strokeColor === "#FFFFFF" && cfg.glow !== false;
 
       if (isGlow) {
         // 白色光暈：用 shadowBlur 模擬柔和發光
@@ -364,14 +364,28 @@ function initTool() {
     }
 
     // ── 矩形照片 ─────────────────────────────────────────
-    function drawRectPhoto(img, { x, y, width, height }) {
+    function drawRectPhoto(img, { x, y, width, height, fit = "cover" }) {
       ctx.save();
-      ctx.beginPath();
-      ctx.rect(x, y, width, height);
-      ctx.clip();
-      const scale = Math.max(width / img.width, height / img.height);
-      const sw = img.width * scale, sh = img.height * scale;
-      ctx.drawImage(img, x + (width - sw) / 2, y + (height - sh) / 2, sw, sh);
+
+      if (fit === "contain") {
+        // 等比例縮小，完整顯示，不裁切，置中對齊
+        const scale = Math.min(width / img.width, height / img.height);
+        const sw = img.width  * scale;
+        const sh = img.height * scale;
+        const dx = x + (width  - sw) / 2;
+        const dy = y + (height - sh) / 2;
+        ctx.drawImage(img, dx, dy, sw, sh);
+      } else {
+        // cover：填滿框架（裁切）
+        ctx.beginPath();
+        ctx.rect(x, y, width, height);
+        ctx.clip();
+        const scale = Math.max(width / img.width, height / img.height);
+        const sw = img.width  * scale;
+        const sh = img.height * scale;
+        ctx.drawImage(img, x + (width - sw) / 2, y + (height - sh) / 2, sw, sh);
+      }
+
       ctx.restore();
     }
 
