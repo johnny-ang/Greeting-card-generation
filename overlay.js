@@ -310,7 +310,13 @@ function initTool() {
       ctx.textBaseline = "middle";
 
       const hasStroke = strokeColor && strokeWidth > 0;
-      if (hasStroke) {
+      const isGlow = hasStroke && strokeColor === "#FFFFFF";
+
+      if (isGlow) {
+        // 白色光暈：用 shadowBlur 模擬柔和發光
+        ctx.shadowColor   = "#FFFFFF";
+        ctx.shadowBlur    = strokeWidth * 3;
+      } else if (hasStroke) {
         ctx.strokeStyle = strokeColor;
         ctx.lineWidth   = strokeWidth * 2;
         ctx.lineJoin    = "round";
@@ -318,7 +324,7 @@ function initTool() {
 
       if (letterSpacing === 0) {
         ctx.textAlign = align;
-        if (hasStroke) ctx.strokeText(text, x, y, maxWidth || undefined);
+        if (hasStroke && !isGlow) ctx.strokeText(text, x, y, maxWidth || undefined);
         ctx.fillStyle = color;
         ctx.fillText(text, x, y, maxWidth || undefined);
       } else {
@@ -335,7 +341,7 @@ function initTool() {
 
         ctx.textAlign = "left";
 
-        if (hasStroke) {
+        if (hasStroke && !isGlow) {
           let cx = startX;
           chars.forEach((ch, i) => {
             ctx.save(); ctx.translate(cx, y);
