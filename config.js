@@ -156,35 +156,35 @@ const TEMPLATES = {
     file: "templates/template_d.jpg",
 
     photo: {
-      x: 700,        // 紅框左邊緣
-      y: 680,        // 紅框上邊緣
-      width: 340,    // 紅框寬度
-      height: 310,   // 紅框高度
+      x: 700,
+      y: 640,        // 1040 - 400 = 640，貼合底線
+      width: 340,
+      height: 400,
     },
 
     name: {
-      x: 520,
-      y: 850,
+      x: 510,
+      y: 830,
       size: 38,
       weight: "700",
       color: "#1A3A6B",
-      strokeColor: null,
-      strokeWidth: 0,
+      strokeColor: "#FFFFFF",
+      strokeWidth: 8,
       align: "left",
       letterSpacing: 10,
       maxWidth: 280,
     },
 
     phone: {
-      x: 520,
-      y: 910,
+      x: 510,
+      y: 890,
       size: 38,
       weight: "700",
       color: "#1A3A6B",
-      strokeColor: null,
-      strokeWidth: 0,
+      strokeColor: "#FFFFFF",
+      strokeWidth: 8,
       align: "left",
-      letterSpacing: -5,
+      letterSpacing: 0,
     },
 
     branch: null,    // 此模板不套入 branch
