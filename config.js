@@ -163,28 +163,28 @@ const TEMPLATES = {
     },
 
     name: {
-      x: 530,        // 黃框左邊緣
-      y: 870,        // 黃框垂直中心
-      size: 48,
-      weight: "700",
-      color: "#1A3A6B",
-      strokeColor: null,
-      strokeWidth: 0,
-      align: "left",
-      letterSpacing: 4,
-      maxWidth: 280,
-    },
-
-    phone: {
-      x: 530,        // 綠框左邊緣
-      y: 930,        // 綠框垂直中心
+      x: 520,
+      y: 850,
       size: 38,
       weight: "700",
       color: "#1A3A6B",
       strokeColor: null,
       strokeWidth: 0,
       align: "left",
-      letterSpacing: 3,
+      letterSpacing: 10,
+      maxWidth: 280,
+    },
+
+    phone: {
+      x: 520,
+      y: 910,
+      size: 38,
+      weight: "700",
+      color: "#1A3A6B",
+      strokeColor: null,
+      strokeWidth: 0,
+      align: "left",
+      letterSpacing: -5,
     },
 
     branch: null,    // 此模板不套入 branch
