@@ -156,48 +156,38 @@ const TEMPLATES = {
     file: "templates/template_d.jpg",
 
     photo: {
-      x: 130,
-      y: 40,
-      width: 390,
-      height: 620,
+      x: 700,        // 紅框左邊緣
+      y: 680,        // 紅框上邊緣
+      width: 340,    // 紅框寬度
+      height: 310,   // 紅框高度
     },
 
     name: {
-      x: 315,
-      y: 720,
-      size: 85,
+      x: 530,        // 黃框左邊緣
+      y: 870,        // 黃框垂直中心
+      size: 48,
       weight: "700",
-      color: "#FFFFFF",
-      strokeColor: "#444444",
-      strokeWidth: 12,
-      align: "center",
-      letterSpacing: 8,
-      maxWidth: 390,
+      color: "#1A3A6B",
+      strokeColor: null,
+      strokeWidth: 0,
+      align: "left",
+      letterSpacing: 4,
+      maxWidth: 280,
     },
 
     phone: {
-      x: 130,
-      y: 820,
-      size: 60,
+      x: 530,        // 綠框左邊緣
+      y: 930,        // 綠框垂直中心
+      size: 38,
       weight: "700",
-      color: "#FFFFFF",
-      strokeColor: "#444444",
-      strokeWidth: 10,
+      color: "#1A3A6B",
+      strokeColor: null,
+      strokeWidth: 0,
       align: "left",
-      letterSpacing: 6,
+      letterSpacing: 3,
     },
 
-    branch: {
-      x: 700,
-      y: 970,
-      size: 48,
-      weight: "700",
-      color: "#FFFFFF",
-      strokeColor: "#444444",
-      strokeWidth: 8,
-      align: "center",
-      letterSpacing: 4,
-    },
+    branch: null,    // 此模板不套入 branch
   },
 
 };
