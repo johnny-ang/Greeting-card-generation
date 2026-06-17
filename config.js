@@ -11,7 +11,7 @@ const TEMPLATES = {
     photo: {
       x: 130,
       y: 40,
-      width: 390,
+      width: 450,
       height: 620,
     },
 
@@ -60,7 +60,7 @@ const TEMPLATES = {
     photo: {
       x: 130,
       y: 40,
-      width: 390,
+      width: 450,
       height: 620,
     },
 
@@ -109,7 +109,7 @@ const TEMPLATES = {
     photo: {
       x: 130,
       y: 40,
-      width: 390,
+      width: 450,
       height: 620,
     },
 
