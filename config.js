@@ -184,7 +184,8 @@ const TEMPLATES = {
       weight: "700",
       color: "#1A3A6B",
       strokeColor: "#FFFFFF",
-      strokeWidth: 8,
+      strokeWidth: 6,
+      glow: false,      // 硬邊描邊，非光暈
       align: "left",
       letterSpacing: 0,
     },
