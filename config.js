@@ -160,6 +160,7 @@ const TEMPLATES = {
       y: 640,        // 1040 - 400 = 640，貼合底線
       width: 340,
       height: 400,
+      fit: "contain", // 完整顯示，不裁切
     },
 
     name: {
