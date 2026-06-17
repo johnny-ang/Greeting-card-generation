@@ -156,10 +156,10 @@ const TEMPLATES = {
     file: "templates/template_d.jpg",
 
     photo: {
-      x: 700,
-      y: 680,        // 1040 - 360 = 680，貼合底線
+      x: 734,        // 1040 - 306 = 734，靠右貼合
+      y: 640,        // 1040 - 400 = 640，貼合底線
       width: 306,
-      height: 360,
+      height: 400,
       fit: "contain",
     },
 
@@ -172,7 +172,7 @@ const TEMPLATES = {
       strokeColor: "#FFFFFF",
       strokeWidth: 8,
       align: "left",
-      letterSpacing: 10,
+      letterSpacing: 20,
       maxWidth: 280,
     },
 
