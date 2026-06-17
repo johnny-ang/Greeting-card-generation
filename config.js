@@ -157,10 +157,10 @@ const TEMPLATES = {
 
     photo: {
       x: 700,
-      y: 640,        // 1040 - 400 = 640，貼合底線
-      width: 340,
-      height: 400,
-      fit: "contain", // 完整顯示，不裁切
+      y: 680,        // 1040 - 360 = 680，貼合底線
+      width: 306,
+      height: 360,
+      fit: "contain",
     },
 
     name: {
@@ -178,7 +178,7 @@ const TEMPLATES = {
 
     phone: {
       x: 510,
-      y: 900,
+      y: 905,
       size: 38,
       weight: "700",
       color: "#1A3A6B",
