@@ -124,7 +124,7 @@ function initTool() {
         img.onerror = () => {
           const ph = document.createElement("div");
           ph.className = "tmpl-placeholder";
-          ph.textContent = ["🅰️","🅱️","🆎"][Object.keys(TEMPLATES).indexOf(key)];
+          ph.textContent = ["🅰️","🅱️","🆎","🆔"][Object.keys(TEMPLATES).indexOf(key)];
           img.replaceWith(ph);
         };
 
