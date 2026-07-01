@@ -283,6 +283,20 @@ function initTool() {
           drawText(cfg, text);
         });
 
+        // brand 圖片（依 agent.brand 查 BRAND_LOGOS 對照表）
+        if (tmpl.brand && selAgent.brand) {
+          const logoUrl = BRAND_LOGOS[selAgent.brand];
+          if (logoUrl) {
+            try {
+              const brandImg = await loadPhotoImage(logoUrl);
+              const { x, y, width, height } = tmpl.brand;
+              ctx.drawImage(brandImg, x, y, width, height);
+            } catch (e) {
+              console.warn("brand logo 載入失敗:", e);
+            }
+          }
+        }
+
         cachedDataUrl = canvas.toDataURL("image/png");
         loadingEl.style.display   = "none";
         canvas.style.display      = "block";
