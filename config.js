@@ -1,5 +1,5 @@
 // ============================================================
-//  config.js — 套圖工具模板設定 v4
+//  config.js — 套圖工具模板設定 v5
 // ============================================================
 
 const TEMPLATES = {
@@ -9,48 +9,41 @@ const TEMPLATES = {
     file: "templates/template_a.jpg",
 
     photo: {
-      x: 130,
-      y: 40,
-      width: 450,
-      height: 620,
+      x: 734,        // 靠右貼合
+      y: 610,        // 貼合底線
+      width: 306,
+      height: 430,
+      fit: "contain",
     },
 
     name: {
-      x: 315,
-      y: 720,
-      size: 85,
+      x: 510,
+      y: 840,
+      size: 38,
       weight: "700",
-      color: "#FFFFFF",
-      strokeColor: "#444444",
-      strokeWidth: 12,
-      align: "center",
-      letterSpacing: 8,
-      maxWidth: 390,
+      color: "#1A3A6B",
+      strokeColor: "#FFFFFF",
+      strokeWidth: 6,
+      glow: false,
+      align: "left",
+      letterSpacing: 20,
+      maxWidth: 280,
     },
 
     phone: {
-      x: 130,
-      y: 820,
-      size: 60,
+      x: 510,
+      y: 905,
+      size: 38,
       weight: "700",
-      color: "#FFFFFF",
-      strokeColor: "#444444",
-      strokeWidth: 10,
+      color: "#1A3A6B",
+      strokeColor: "#FFFFFF",
+      strokeWidth: 6,
+      glow: false,
       align: "left",
-      letterSpacing: 6,
+      letterSpacing: 0,
     },
 
-    branch: {
-      x: 700,
-      y: 970,
-      size: 48,
-      weight: "700",
-      color: "#FFFFFF",
-      strokeColor: "#444444",
-      strokeWidth: 8,
-      align: "center",
-      letterSpacing: 4,
-    },
+    branch: null,
   },
 
   B: {
@@ -58,48 +51,41 @@ const TEMPLATES = {
     file: "templates/template_b.jpg",
 
     photo: {
-      x: 130,
-      y: 40,
-      width: 450,
-      height: 620,
+      x: 734,
+      y: 610,
+      width: 306,
+      height: 430,
+      fit: "contain",
     },
 
     name: {
-      x: 315,
-      y: 720,
-      size: 85,
+      x: 510,
+      y: 840,
+      size: 38,
       weight: "700",
-      color: "#FFFFFF",
-      strokeColor: "#444444",
-      strokeWidth: 12,
-      align: "center",
-      letterSpacing: 8,
-      maxWidth: 390,
+      color: "#1A3A6B",
+      strokeColor: "#FFFFFF",
+      strokeWidth: 6,
+      glow: false,
+      align: "left",
+      letterSpacing: 20,
+      maxWidth: 280,
     },
 
     phone: {
-      x: 130,
-      y: 820,
-      size: 60,
+      x: 510,
+      y: 905,
+      size: 38,
       weight: "700",
-      color: "#FFFFFF",
-      strokeColor: "#444444",
-      strokeWidth: 10,
+      color: "#1A3A6B",
+      strokeColor: "#FFFFFF",
+      strokeWidth: 6,
+      glow: false,
       align: "left",
-      letterSpacing: 6,
+      letterSpacing: 0,
     },
 
-    branch: {
-      x: 700,
-      y: 970,
-      size: 48,
-      weight: "700",
-      color: "#FFFFFF",
-      strokeColor: "#444444",
-      strokeWidth: 8,
-      align: "center",
-      letterSpacing: 4,
-    },
+    branch: null,
   },
 
   C: {
@@ -156,8 +142,8 @@ const TEMPLATES = {
     file: "templates/template_d.jpg",
 
     photo: {
-      x: 734,        // 1040 - 306 = 734，靠右貼合
-      y: 610,        // 1040 - 430 = 610，貼合底線
+      x: 734,
+      y: 610,
       width: 306,
       height: 430,
       fit: "contain",
@@ -171,7 +157,7 @@ const TEMPLATES = {
       color: "#1A3A6B",
       strokeColor: "#FFFFFF",
       strokeWidth: 6,
-      glow: false,      // 硬邊描邊，非光暈
+      glow: false,
       align: "left",
       letterSpacing: 20,
       maxWidth: 280,
@@ -185,12 +171,12 @@ const TEMPLATES = {
       color: "#1A3A6B",
       strokeColor: "#FFFFFF",
       strokeWidth: 6,
-      glow: false,      // 硬邊描邊，非光暈
+      glow: false,
       align: "left",
       letterSpacing: 0,
     },
 
-    branch: null,    // 此模板不套入 branch
+    branch: null,
   },
 
 };
