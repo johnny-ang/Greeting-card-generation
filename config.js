@@ -5,7 +5,7 @@
 const TEMPLATES = {
 
   A: {
-    label: "永慶不動產",
+    label: "6月戰報",
     file: "templates/template_a.jpg",
 
     photo: {
@@ -47,7 +47,7 @@ const TEMPLATES = {
   },
 
   B: {
-    label: "永義房屋",
+    label: "新青安2.0",
     file: "templates/template_b.jpg",
 
     photo: {
@@ -89,7 +89,7 @@ const TEMPLATES = {
   },
 
   C: {
-    label: "喆禮團隊",
+    label: "不動產安全",
     file: "templates/template_c.jpg",
 
     photo: {
@@ -138,7 +138,7 @@ const TEMPLATES = {
   },
 
   D: {
-    label: "新青安2.0",
+    label: "注意熱傷害",
     file: "templates/template_d.jpg",
 
     photo: {
