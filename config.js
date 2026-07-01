@@ -129,7 +129,7 @@ const TEMPLATES = {
 
     brand: {
       x: 61,
-      y: 859,        // name 下緣
+      y: 830,        // name 下緣
       width: 400,    // 右緣對齊下方團隊 logo 左側
       height: null,  // 依圖片原始比例自動計算
     },
