@@ -5,7 +5,7 @@
 const TEMPLATES = {
 
   A: {
-    label: "6月戰報",
+    label: "永慶不動產",
     file: "templates/template_a.jpg",
 
     photo: {
@@ -47,7 +47,7 @@ const TEMPLATES = {
   },
 
   B: {
-    label: "新青安2.0",
+    label: "永義房屋",
     file: "templates/template_b.jpg",
 
     photo: {
@@ -89,7 +89,7 @@ const TEMPLATES = {
   },
 
   C: {
-    label: "不動產安全",
+    label: "喆禮團隊",
     file: "templates/template_c.jpg",
 
     photo: {
@@ -129,16 +129,16 @@ const TEMPLATES = {
 
     brand: {
       x: 61,
-      y: 859,        // name 下緣（y=840 + 38/2 = 859）
-      width: 436,
-      height: 89,
+      y: 859,        // name 下緣
+      width: 400,    // 右緣對齊下方團隊 logo 左側
+      height: null,  // 依圖片原始比例自動計算
     },
 
     branch: null,
   },
 
   D: {
-    label: "空白版面",
+    label: "新青安2.0",
     file: "templates/template_d.jpg",
 
     photo: {
