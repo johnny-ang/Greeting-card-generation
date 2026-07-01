@@ -283,14 +283,20 @@ function initTool() {
           drawText(cfg, text);
         });
 
-        // brand 圖片（依 agent.brand 查 BRAND_LOGOS 對照表）
+        // brand 圖片（依 agent.brand 查 BRAND_LOGOS 對照表，等比例 contain）
         if (tmpl.brand && selAgent.brand) {
           const logoUrl = BRAND_LOGOS[selAgent.brand];
           if (logoUrl) {
             try {
               const brandImg = await loadPhotoImage(logoUrl);
               const { x, y, width, height } = tmpl.brand;
-              ctx.drawImage(brandImg, x, y, width, height);
+              // contain 模式：等比例縮放，置中，不裁切
+              const scale = Math.min(width / brandImg.width, height / brandImg.height);
+              const sw = brandImg.width  * scale;
+              const sh = brandImg.height * scale;
+              const dx = x + (width  - sw) / 2;
+              const dy = y + (height - sh) / 2;
+              ctx.drawImage(brandImg, dx, dy, sw, sh);
             } catch (e) {
               console.warn("brand logo 載入失敗:", e);
             }
