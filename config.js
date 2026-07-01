@@ -175,8 +175,25 @@ const TEMPLATES = {
       align: "left",
       letterSpacing: 0,
     },
-
-    branch: null,
+    
+brand: {
+      x: 61,
+      y: 750,        
+      width: 400,    // 右緣對齊下方團隊 logo 左側
+      height: null,  // 依圖片原始比例自動計算
+    },
+    
+    branch: {
+      x: 61,
+      y: 830,
+      size: 46,
+      weight: "700",
+      color: "#1A3A6B",
+      strokeColor: "#FFFFFF",
+      strokeWidth: 6,
+      glow: false,
+      align: "left",
+      letterSpacing: 0,,
   },
 
 };
