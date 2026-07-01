@@ -184,15 +184,15 @@ const TEMPLATES = {
     },
 
     branch: {
-      x: 61,
-      y: 880,          // brand 下方（y=750 + logo高度約130）
+      x: 261,          // brand 置中（61 + 400/2）
+      y: 910,
       size: 38,
       weight: "700",
       color: "#1A3A6B",
       strokeColor: "#FFFFFF",
       strokeWidth: 6,
       glow: false,
-      align: "left",
+      align: "center",
       letterSpacing: 0,
     },
   },
