@@ -89,7 +89,7 @@ const TEMPLATES = {
   },
 
   C: {
-    label: "空白版面",
+    label: "不動產安全",
     file: "templates/template_c.jpg",
 
     photo: {
