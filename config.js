@@ -47,7 +47,7 @@ const TEMPLATES = {
   },
 
   B: {
-    label: "新青安2.0",
+    label: "防颱安全宣導",
     file: "templates/template_b.jpg",
 
     photo: {
