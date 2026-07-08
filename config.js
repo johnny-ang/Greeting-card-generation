@@ -196,14 +196,14 @@ const TEMPLATES = {
 
     brand: {
       x: 61,
-      y: 820,
+      y: 800,
       width: 400,
       height: null,
     },
 
     branch: {
       x: 261,          // brand 置中（61 + 400/2）
-      y: 950,
+      y: 945,
       size: 38,
       weight: "700",
       color: "#1A3A6B",
