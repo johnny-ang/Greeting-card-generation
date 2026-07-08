@@ -196,7 +196,7 @@ const TEMPLATES = {
 
     brand: {
       x: 61,
-      y: 800,
+      y: 795,
       width: 400,
       height: null,
     },
