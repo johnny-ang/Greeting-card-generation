@@ -156,7 +156,7 @@ const TEMPLATES = {
   },
 
   D: {
-    label: "注意熱傷害",
+    label: "永慶金獎肯定",
     file: "templates/template_d.jpg",
 
     photo: {
@@ -196,14 +196,14 @@ const TEMPLATES = {
 
     brand: {
       x: 61,
-      y: 750,
+      y: 820,
       width: 400,
       height: null,
     },
 
     branch: {
       x: 261,          // brand 置中（61 + 400/2）
-      y: 910,
+      y: 950,
       size: 38,
       weight: "700",
       color: "#1A3A6B",
