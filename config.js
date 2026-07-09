@@ -5,12 +5,12 @@
 const TEMPLATES = {
 
   A: {
-    label: "6月戰報",
+    label: "上半年戰報",
     file: "templates/template_a.jpg",
 
     photo: {
-      x: 734,        // 靠右貼合
-      y: 610,        // 貼合底線
+      x: 734,
+      y: 610,
       width: 306,
       height: 430,
       fit: "contain",
@@ -43,7 +43,25 @@ const TEMPLATES = {
       letterSpacing: 0,
     },
 
-    branch: null,
+    brand: {
+      x: 61,
+      y: 750,
+      width: 400,
+      height: null,
+    },
+
+    branch: {
+      x: 261,          // brand 置中（61 + 400/2）
+      y: 910,
+      size: 38,
+      weight: "700",
+      color: "#1A3A6B",
+      strokeColor: "#FFFFFF",
+      strokeWidth: 6,
+      glow: false,
+      align: "center",
+      letterSpacing: 0,
+    },
   },
 
   B: {
