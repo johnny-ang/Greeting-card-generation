@@ -1,5 +1,5 @@
 // ============================================================
-//  config.js — 套圖工具模板設定 v5
+//  config.js — 套圖工具模板設定（由管理者工具產生）
 // ============================================================
 
 const TEMPLATES = {
@@ -51,7 +51,7 @@ const TEMPLATES = {
     },
 
     branch: {
-      x: 261,          // brand 置中（61 + 400/2）
+      x: 261,
       y: 910,
       size: 38,
       weight: "700",
@@ -62,6 +62,7 @@ const TEMPLATES = {
       align: "center",
       letterSpacing: 0,
     },
+
   },
 
   B: {
@@ -111,7 +112,7 @@ const TEMPLATES = {
     },
 
     branch: {
-      x: 261,          // brand 置中（61 + 400/2）
+      x: 261,
       y: 910,
       size: 38,
       weight: "700",
@@ -122,6 +123,7 @@ const TEMPLATES = {
       align: "center",
       letterSpacing: 0,
     },
+
   },
 
   C: {
@@ -165,12 +167,13 @@ const TEMPLATES = {
 
     brand: {
       x: 61,
-      y: 859,        // name 下緣
-      width: 400,    // 右緣對齊下方團隊 logo 左側
-      height: null,  // 依圖片原始比例自動計算
+      y: 859,
+      width: 400,
+      height: null,
     },
 
     branch: null,
+
   },
 
   D: {
@@ -178,10 +181,10 @@ const TEMPLATES = {
     file: "templates/template_d.jpg",
 
     photo: {
-      x: 734,
-      y: 610,
-      width: 306,
-      height: 430,
+      x: 637,
+      y: 397,
+      width: 380,
+      height: 642,
       fit: "contain",
     },
 
@@ -220,7 +223,7 @@ const TEMPLATES = {
     },
 
     branch: {
-      x: 261,          // brand 置中（61 + 400/2）
+      x: 261,
       y: 945,
       size: 38,
       weight: "700",
@@ -231,6 +234,7 @@ const TEMPLATES = {
       align: "center",
       letterSpacing: 0,
     },
+
   },
 
 };
@@ -238,9 +242,8 @@ const TEMPLATES = {
 const API_URL = "https://script.google.com/macros/s/AKfycbw-yw0sqW_PHb0AAEBGDEE1rB5kxxIVSLETWjjLVKnLmn0OZQ-zPn6y6-kBXHVtQvuf/exec";
 const FONT_FAMILY = "Jf Open粉圓";
 
-// 品牌 Logo 對照表（依 Google Sheets brand 欄位自動對應）
+// 品牌 Logo 對照表
 const BRAND_LOGOS = {
   "永慶不動產": "https://lh3.googleusercontent.com/d/1LcuW_637pHoTXDPW23Rk7UYZSjunWlA0",
-  "永義房屋":   "https://lh3.googleusercontent.com/d/1EFqWLqVE69s1yANFGcWauNjkCGtiI5Vc",
+  "永義房屋": "https://lh3.googleusercontent.com/d/1EFqWLqVE69s1yANFGcWauNjkCGtiI5Vc"
 };
-// 暫存，實際改法見下方
