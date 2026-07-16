@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>喆禮賀卡工具 — 管理者介面</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #0F1117;
+    --surface:  #1A1D27;
+    --surface2: #22263A;
+    --border:   #2E3250;
+    --accent:   #6366F1;
+    --accent2:  #818CF8;
+    --danger:   #EF4444;
+    --success:  #22C55E;
+    --warn:     #F59E0B;
+    --text:     #E2E8F0;
+    --muted:    #64748B;
+    --radius:   10px;
+  }
+
+  body {
+    font-family: 'Jf Open粉圓', 'Noto Sans TC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── 登入畫面 ── */
+  #login-screen {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg); z-index: 9999;
+  }
+  .login-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px 36px;
+    width: 360px;
+    text-align: center;
+  }
+  .login-box .icon { font-size: 48px; margin-bottom: 16px; }
+  .login-box h1 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .login-box p  { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+  .login-box input {
+    width: 100%; padding: 12px 16px;
+    background: var(--bg); border: 1.5px solid var(--border);
+    border-radius: 8px; color: var(--text); font-size: 15px;
+    font-family: inherit; margin-bottom: 12px; outline: none;
+    transition: border-color .15s;
+  }
+  .login-box input:focus { border-color: var(--accent); }
+  .login-box button {
+    width: 100%; padding: 12px;
+    background: var(--accent); border: none; border-radius: 8px;
+    color: #fff; font-size: 15px; font-weight: 700;
+    font-family: inherit; cursor: pointer; transition: background .15s;
+  }
+  .login-box button:hover { background: var(--accent2); }
+  #login-error {
+    margin-top: 10px; font-size: 13px; color: var(--danger); min-height: 18px;
+  }
+
+  /* ── 主介面 ── */
+  #app { display: none; height: 100vh; flex-direction: column; }
+
+  /* 頂部 bar */
+  .topbar {
+    display: flex; align-items: center; gap: 16px;
+    padding: 12px 20px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .topbar h1 { font-size: 16px; font-weight: 700; flex: 1; }
+  .topbar .badge {
+    font-size: 11px; padding: 3px 8px;
+    background: var(--accent); border-radius: 20px; color: #fff;
+  }
+
+  /* 主要區域 */
+  .workspace {
+    display: grid;
+    grid-template-columns: 260px 1fr 280px;
+    flex: 1; overflow: hidden;
+  }
+
+  /* ── 左側面板 ── */
+  .left-panel {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 16px;
+  }
+  .panel-section { margin-bottom: 20px; }
+  .panel-label {
+    font-size: 11px; font-weight: 700; color: var(--muted);
+    letter-spacing: .08em; text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  /* 模板選擇 */
+  .tmpl-list { display: flex; flex-direction: column; gap: 6px; }
+  .tmpl-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 8px;
+    border: 1.5px solid var(--border);
+    cursor: pointer; transition: all .15s;
+    background: var(--surface2);
+  }
+  .tmpl-item:hover  { border-color: var(--accent2); }
+  .tmpl-item.active { border-color: var(--accent); background: #6366F115; }
+  .tmpl-thumb {
+    width: 40px; height: 40px; border-radius: 4px;
+    object-fit: cover; background: var(--border); flex-shrink: 0;
+  }
+  .tmpl-info strong { display: block; font-size: 13px; }
+  .tmpl-info span   { font-size: 11px; color: var(--muted); }
+
+  /* 上傳底圖按鈕 */
+  #btn-upload-tmpl {
+    width: 100%; padding: 10px;
+    background: var(--surface2);
+    border: 1.5px dashed var(--border);
+    border-radius: 8px; color: var(--muted);
+    font-size: 13px; font-family: inherit;
+    cursor: not-allowed; transition: all .15s; margin-top: 8px;
+  }
+  #btn-upload-tmpl.active {
+    border-color: var(--accent); color: var(--accent);
+    cursor: pointer; background: #6366F110;
+  }
+  #btn-upload-tmpl.active:hover { background: #6366F120; }
+  #file-input-tmpl { display: none; }
+
+  /* 元素列表 */
+  .element-list { display: flex; flex-direction: column; gap: 4px; }
+  .element-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px; border-radius: 6px;
+    cursor: pointer; transition: background .1s;
+    border: 1.5px solid transparent;
+  }
+  .element-item:hover  { background: var(--surface2); }
+  .element-item.active { border-color: var(--accent); background: #6366F115; }
+  .element-dot {
+    width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0;
+  }
+  .element-item span { font-size: 13px; }
+  .element-item .coords { font-size: 10px; color: var(--muted); margin-left: auto; }
+
+  /* ── 中央畫布 ── */
+  .canvas-area {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: #070A13; overflow: hidden; position: relative;
+  }
+  #canvas-wrap {
+    position: relative; cursor: crosshair;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  }
+  #main-canvas { display: block; }
+
+  .canvas-hint {
+    position: absolute; bottom: 16px;
+    font-size: 12px; color: var(--muted);
+    background: rgba(0,0,0,0.6);
+    padding: 6px 14px; border-radius: 20px;
+  }
+
+  /* ── 右側屬性面板 ── */
+  .right-panel {
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    overflow-y: auto; padding: 16px;
+  }
+  .prop-group { margin-bottom: 20px; }
+  .prop-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 8px; margin-bottom: 8px;
+  }
+  .prop-row.full { grid-template-columns: 1fr; }
+  .prop-field label {
+    display: block; font-size: 11px; color: var(--muted);
+    margin-bottom: 4px; font-weight: 500;
+  }
+  .prop-field input, .prop-field select {
+    width: 100%; padding: 7px 10px;
+    background: var(--bg); border: 1.5px solid var(--border);
+    border-radius: 6px; color: var(--text); font-size: 13px;
+    font-family: inherit; outline: none; transition: border-color .15s;
+  }
+  .prop-field input:focus, .prop-field select:focus {
+    border-color: var(--accent);
+  }
+  .prop-field input[type="color"] {
+    padding: 2px 4px; height: 34px; cursor: pointer;
+  }
+
+  /* 儲存按鈕區 */
+  .save-area {
+    padding: 16px;
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    flex-shrink: 0;
+  }
+  .save-row { display: flex; gap: 8px; }
+  .btn-save {
+    flex: 1; padding: 11px;
+    border: none; border-radius: 8px;
+    font-size: 14px; font-weight: 700;
+    font-family: inherit; cursor: pointer; transition: all .15s;
+  }
+  .btn-save.primary { background: var(--accent); color: #fff; }
+  .btn-save.primary:hover { background: var(--accent2); }
+  .btn-save.secondary {
+    background: var(--surface2);
+    border: 1.5px solid var(--border); color: var(--text);
+  }
+  .btn-save.secondary:hover { border-color: var(--accent2); }
+  .btn-save:disabled { opacity: .4; cursor: not-allowed; }
+
+  #save-status {
+    margin-top: 10px; font-size: 12px;
+    text-align: center; min-height: 16px; color: var(--muted);
+  }
+  #save-status.ok   { color: var(--success); }
+  #save-status.err  { color: var(--danger); }
+  #save-status.warn { color: var(--warn); }
+
+  /* spinner */
+  .spinner {
+    display: inline-block; width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff; border-radius: 50%;
+    animation: spin .6s linear infinite; vertical-align: middle;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- ── 登入畫面 ── -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="icon">🛡️</div>
+    <h1>管理者登入</h1>
+    <p>喆禮賀卡工具 — 模板編輯系統</p>
+    <input type="password" id="pw-input" placeholder="請輸入管理密碼" autocomplete="current-password">
+    <button id="btn-login">登入</button>
+    <div id="login-error"></div>
+  </div>
+</div>
+
+<!-- ── 主介面 ── -->
+<div id="app">
+  <!-- 頂部 -->
+  <div class="topbar">
+    <h1>🎨 喆禮賀卡 — 模板管理</h1>
+    <span class="badge" id="tmpl-badge">未選擇</span>
+    <button class="btn-save secondary" style="width:auto;padding:8px 16px;font-size:13px" onclick="logout()">登出</button>
+  </div>
+
+  <!-- 工作區 -->
+  <div class="workspace">
+
+    <!-- 左側：模板選擇 + 元素列表 -->
+    <div class="left-panel">
+      <div class="panel-section">
+        <div class="panel-label">選擇模板</div>
+        <div class="tmpl-list" id="tmpl-list"></div>
+        <input type="file" id="file-input-tmpl" accept="image/jpeg,image/png">
+        <button id="btn-upload-tmpl" disabled>⬆ 上傳底圖（請先選擇模板）</button>
+        <div id="upload-hint" style="font-size:11px;color:var(--muted);margin-top:6px;text-align:center"></div>
+      </div>
+
+      <div class="panel-section">
+        <div class="panel-label">版面元素</div>
+        <div class="element-list" id="element-list">
+          <div style="font-size:12px;color:var(--muted);text-align:center;padding:20px">請先選擇模板</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 中央：畫布 -->
+    <div class="canvas-area">
+      <div id="canvas-wrap">
+        <canvas id="main-canvas" width="600" height="600"></canvas>
+      </div>
+      <div class="canvas-hint" id="canvas-hint">選擇模板後開始編輯</div>
+    </div>
+
+    <!-- 右側：屬性 -->
+    <div class="right-panel" id="right-panel">
+      <div class="panel-label">元素屬性</div>
+      <div id="prop-content" style="font-size:12px;color:var(--muted);padding:20px 0;text-align:center">
+        點選元素後顯示屬性
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 底部儲存 -->
+  <div class="save-area">
+    <div class="save-row">
+      <button class="btn-save secondary" id="btn-preview" disabled onclick="renderPreview()">🔍 重新預覽</button>
+      <button class="btn-save primary"   id="btn-save"    disabled onclick="saveConfig()">💾 儲存並寫回 GitHub</button>
+    </div>
+    <div id="save-status"></div>
+  </div>
+</div>
+
+<script src="config.js"></script>
+<script>
+// ── 設定 ──────────────────────────────────────────────────
+const ADMIN_API = "貼上你的_Apps_Script_Web_API_網址";  // ← 填入
+
+// 元素顏色對照
+const ELEMENT_COLORS = {
+  photo:  "#EF4444",
+  name:   "#3B82F6",
+  phone:  "#22C55E",
+  brand:  "#A855F7",
+  branch: "#F59E0B",
+};
+
+const ELEMENT_LABELS = {
+  photo: "人像照片", name: "姓名", phone: "電話",
+  brand: "品牌Logo", branch: "分行",
+};
+
+// ── 狀態 ──────────────────────────────────────────────────
+let adminPassword = "";
+let selTmplKey    = null;
+let selElement    = null;
+let editConfig    = null;   // 正在編輯的 config 副本
+let bgImage       = null;
+let isDragging    = false;
+let isResizing    = false;
+let dragOffX      = 0, dragOffY = 0;
+let resizeHandle  = null;
+
+const CANVAS_SIZE = 600;
+const SCALE       = CANVAS_SIZE / 1040;
+
+const canvas = document.getElementById("main-canvas");
+const ctx    = canvas.getContext("2d");
+
+// ── 登入 ──────────────────────────────────────────────────
+document.getElementById("btn-login").addEventListener("click", doLogin);
+document.getElementById("pw-input").addEventListener("keydown", e => {
+  if (e.key === "Enter") doLogin();
+});
+
+async function doLogin() {
+  const pw = document.getElementById("pw-input").value;
+  if (!pw) return;
+
+  // 驗證：送一個 ping 到 Apps Script
+  try {
+    const res = await fetch(ADMIN_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ action: "getConfig", password: pw })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      adminPassword = pw;
+      document.getElementById("login-screen").style.display = "none";
+      document.getElementById("app").style.display = "flex";
+      document.getElementById("app").style.flexDirection = "column";
+      initApp();
+    } else {
+      document.getElementById("login-error").textContent = "密碼錯誤，請再試一次";
+    }
+  } catch (e) {
+    document.getElementById("login-error").textContent = "無法連線，請確認網路";
+  }
+}
+
+function logout() {
+  adminPassword = "";
+  document.getElementById("login-screen").style.display = "flex";
+  document.getElementById("app").style.display = "none";
+  document.getElementById("pw-input").value = "";
+}
+
+// ── 初始化 ────────────────────────────────────────────────
+function initApp() {
+  editConfig = JSON.parse(JSON.stringify(TEMPLATES));
+  buildTmplList();
+  setupCanvas();
+}
+
+// ── 模板列表 ──────────────────────────────────────────────
+function buildTmplList() {
+  const list = document.getElementById("tmpl-list");
+  list.innerHTML = "";
+  Object.entries(editConfig).forEach(([key, tmpl]) => {
+    const item = document.createElement("div");
+    item.className = "tmpl-item";
+    item.dataset.key = key;
+
+    const img = document.createElement("img");
+    img.className = "tmpl-thumb";
+    img.src = tmpl.file;
+    img.onerror = () => { img.style.background = "#2E3250"; img.src = ""; };
+
+    const info = document.createElement("div");
+    info.className = "tmpl-info";
+    info.innerHTML = `<strong>${tmpl.label}</strong><span>模板 ${key}</span>`;
+
+    item.appendChild(img);
+    item.appendChild(info);
+    item.addEventListener("click", () => selectTemplate(key));
+    list.appendChild(item);
+  });
+}
+
+function selectTemplate(key) {
+  selTmplKey = key;
+  selElement = null;
+  document.querySelectorAll(".tmpl-item").forEach(i =>
+    i.classList.toggle("active", i.dataset.key === key)
+  );
+  document.getElementById("tmpl-badge").textContent = editConfig[key].label;
+
+  // 啟用上傳底圖按鈕
+  const uploadBtn = document.getElementById("btn-upload-tmpl");
+  uploadBtn.classList.add("active");
+  uploadBtn.disabled = false;
+  uploadBtn.textContent = `⬆ 上傳底圖（${editConfig[key].label}）`;
+
+  document.getElementById("btn-preview").disabled = false;
+  document.getElementById("btn-save").disabled = false;
+
+  buildElementList();
+  loadBgAndRender();
+}
+
+// ── 上傳底圖 ──────────────────────────────────────────────
+document.getElementById("btn-upload-tmpl").addEventListener("click", () => {
+  if (selTmplKey) document.getElementById("file-input-tmpl").click();
+});
+
+document.getElementById("file-input-tmpl").addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  // 驗證尺寸
+  const img = new Image();
+  const url  = URL.createObjectURL(file);
+  img.onload = async () => {
+    URL.revokeObjectURL(url);
+    if (img.width !== 1040 || img.height !== 1040) {
+      setUploadHint(`❌ 圖片尺寸必須為 1040×1040（目前 ${img.width}×${img.height}）`, "err");
+      return;
+    }
+
+    setUploadHint("上傳中…", "warn");
+
+    // 轉 Base64
+    const reader = new FileReader();
+    reader.onload = async (ev) => {
+      const base64 = ev.target.result.split(",")[1];
+      const filename = editConfig[selTmplKey].file.split("/").pop();
+
+      try {
+        const res = await fetch(ADMIN_API, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "uploadTemplate",
+            password: adminPassword,
+            filename: filename,
+            content: base64
+          })
+        });
+        const data = await res.json();
+        if (data.ok) {
+          setUploadHint(`✅ 上傳成功：${filename}`, "ok");
+          // 重新載入底圖
+          setTimeout(() => loadBgAndRender(), 1500);
+        } else {
+          setUploadHint("❌ 上傳失敗：" + data.error, "err");
+        }
+      } catch (err) {
+        setUploadHint("❌ 網路錯誤：" + err.message, "err");
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+  img.src = url;
+  e.target.value = "";
+});
+
+function setUploadHint(msg, type) {
+  const el = document.getElementById("upload-hint");
+  el.textContent = msg;
+  el.style.color = type === "ok" ? "var(--success)"
+                 : type === "err" ? "var(--danger)"
+                 : "var(--warn)";
+}
+
+// ── 元素列表 ──────────────────────────────────────────────
+function buildElementList() {
+  const list = document.getElementById("element-list");
+  list.innerHTML = "";
+  const tmpl = editConfig[selTmplKey];
+  const keys = ["photo", "name", "phone", "brand", "branch"];
+
+  keys.forEach(k => {
+    const cfg = tmpl[k];
+    const item = document.createElement("div");
+    item.className = "element-item";
+    item.dataset.el = k;
+
+    const dot = document.createElement("div");
+    dot.className = "element-dot";
+    dot.style.background = ELEMENT_COLORS[k];
+
+    const label = document.createElement("span");
+    label.textContent = ELEMENT_LABELS[k];
+
+    const coords = document.createElement("span");
+    coords.className = "coords";
+    if (cfg && cfg !== null) {
+      coords.textContent = cfg.x !== undefined ? `${cfg.x},${cfg.y}` : "—";
+    } else {
+      coords.textContent = "停用";
+      item.style.opacity = "0.4";
+    }
+
+    item.appendChild(dot);
+    item.appendChild(label);
+    item.appendChild(coords);
+    item.addEventListener("click", () => { if (cfg) selectElement(k); });
+    list.appendChild(item);
+  });
+}
+
+function selectElement(key) {
+  selElement = key;
+  document.querySelectorAll(".element-item").forEach(i =>
+    i.classList.toggle("active", i.dataset.el === key)
+  );
+  buildPropPanel();
+  renderCanvas();
+}
+
+// ── 屬性面板 ──────────────────────────────────────────────
+function buildPropPanel() {
+  if (!selElement || !selTmplKey) return;
+  const cfg = editConfig[selTmplKey][selElement];
+  if (!cfg) return;
+
+  const panel = document.getElementById("prop-content");
+  panel.innerHTML = "";
+
+  const isPhoto = selElement === "photo";
+  const isBrand = selElement === "brand";
+
+  // 通用欄位：位置 / 尺寸
+  const fields = [
+    { label: "X", key: "x", type: "number" },
+    { label: "Y", key: "y", type: "number" },
+    { label: "寬度", key: "width", type: "number" },
+    { label: "高度", key: "height", type: "number" },
+  ];
+
+  const posRow = makePropRow(cfg, fields.slice(0, 2));
+  const sizeRow = makePropRow(cfg, fields.slice(2, 4));
+  panel.appendChild(posRow);
+  panel.appendChild(sizeRow);
+
+  // 文字欄位
+  if (!isPhoto && !isBrand) {
+    const textFields = [
+      { label: "字體大小", key: "size", type: "number" },
+      { label: "字重", key: "weight", type: "select", options: ["400","700"] },
+      { label: "文字顏色", key: "color", type: "color" },
+      { label: "描邊顏色", key: "strokeColor", type: "color" },
+      { label: "描邊寬度", key: "strokeWidth", type: "number" },
+      { label: "字間距", key: "letterSpacing", type: "number" },
+      { label: "對齊", key: "align", type: "select", options: ["left","center","right"] },
+    ];
+    textFields.forEach(f => {
+      const row = document.createElement("div");
+      row.className = "prop-row full";
+      row.appendChild(makePropField(cfg, f));
+      panel.appendChild(row);
+    });
+  }
+
+  // photo 的 fit 模式
+  if (isPhoto) {
+    const fitRow = document.createElement("div");
+    fitRow.className = "prop-row full";
+    fitRow.appendChild(makePropField(cfg, {
+      label: "填充模式", key: "fit", type: "select",
+      options: ["cover","contain"]
+    }));
+    panel.appendChild(fitRow);
+  }
+}
+
+function makePropRow(cfg, fields) {
+  const row = document.createElement("div");
+  row.className = "prop-row";
+  fields.forEach(f => row.appendChild(makePropField(cfg, f)));
+  return row;
+}
+
+function makePropField(cfg, f) {
+  const wrap = document.createElement("div");
+  wrap.className = "prop-field";
+
+  const label = document.createElement("label");
+  label.textContent = f.label;
+
+  let input;
+  if (f.type === "select") {
+    input = document.createElement("select");
+    f.options.forEach(o => {
+      const opt = document.createElement("option");
+      opt.value = o; opt.textContent = o;
+      if (String(cfg[f.key]) === o) opt.selected = true;
+      input.appendChild(opt);
+    });
+  } else {
+    input = document.createElement("input");
+    input.type  = f.type;
+    input.value = cfg[f.key] ?? "";
+  }
+
+  input.addEventListener("input", () => {
+    const val = f.type === "number" ? Number(input.value) : input.value;
+    cfg[f.key] = val;
+    updateElementCoords();
+    renderCanvas();
+  });
+
+  wrap.appendChild(label);
+  wrap.appendChild(input);
+  return wrap;
+}
+
+function updateElementCoords() {
+  const item = document.querySelector(`.element-item[data-el="${selElement}"]`);
+  if (!item) return;
+  const cfg = editConfig[selTmplKey][selElement];
+  const coords = item.querySelector(".coords");
+  if (coords && cfg) coords.textContent = `${cfg.x},${cfg.y}`;
+}
+
+// ── Canvas 設定 ────────────────────────────────────────────
+function setupCanvas() {
+  canvas.addEventListener("mousedown", onMouseDown);
+  canvas.addEventListener("mousemove", onMouseMove);
+  canvas.addEventListener("mouseup",   onMouseUp);
+  canvas.addEventListener("mouseleave",onMouseUp);
+}
+
+function canvasToConfig(cx, cy) {
+  return { x: Math.round(cx / SCALE), y: Math.round(cy / SCALE) };
+}
+
+function configToCanvas(x, y) {
+  return { cx: x * SCALE, cy: y * SCALE };
+}
+
+function getElementRect(key) {
+  const cfg = editConfig[selTmplKey]?.[key];
+  if (!cfg || cfg === null) return null;
+
+  const cx = (cfg.x || 0) * SCALE;
+  const cy = (cfg.y || 0) * SCALE;
+  const cw = ((cfg.width  || 100)) * SCALE;
+  const ch = ((cfg.height || 50 )) * SCALE;
+  return { cx, cy, cw, ch };
+}
+
+// ── 拖拉事件 ──────────────────────────────────────────────
+function onMouseDown(e) {
+  if (!selTmplKey) return;
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+
+  // 先找目前選取元素的 resize 控制點
+  if (selElement) {
+    const r = getElementRect(selElement);
+    if (r) {
+      const handles = getResizeHandles(r);
+      for (const [hname, hx, hy] of handles) {
+        if (Math.abs(mx - hx) < 8 && Math.abs(my - hy) < 8) {
+          isResizing  = true;
+          resizeHandle = hname;
+          return;
+        }
+      }
+      // 拖動框體
+      if (mx >= r.cx && mx <= r.cx + r.cw && my >= r.cy && my <= r.cy + r.ch) {
+        isDragging = true;
+        dragOffX = mx - r.cx;
+        dragOffY = my - r.cy;
+        return;
+      }
+    }
+  }
+
+  // 點擊其他元素
+  const keys = ["photo","name","phone","brand","branch"];
+  for (const k of keys) {
+    const r = getElementRect(k);
+    if (!r) continue;
+    if (mx >= r.cx && mx <= r.cx + r.cw && my >= r.cy && my <= r.cy + r.ch) {
+      selectElement(k);
+      isDragging = true;
+      dragOffX = mx - r.cx;
+      dragOffY = my - r.cy;
+      return;
+    }
+  }
+}
+
+function onMouseMove(e) {
+  if (!selTmplKey || !selElement) return;
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  const cfg = editConfig[selTmplKey][selElement];
+
+  if (isDragging && cfg) {
+    const nx = Math.max(0, Math.round((mx - dragOffX) / SCALE));
+    const ny = Math.max(0, Math.round((my - dragOffY) / SCALE));
+    cfg.x = nx; cfg.y = ny;
+    updateElementCoords();
+    buildPropPanel();
+    renderCanvas();
+  }
+
+  if (isResizing && cfg) {
+    const r = getElementRect(selElement);
+    if (resizeHandle === "br") {
+      cfg.width  = Math.max(20, Math.round((mx - r.cx) / SCALE));
+      cfg.height = Math.max(20, Math.round((my - r.cy) / SCALE));
+    } else if (resizeHandle === "mr") {
+      cfg.width  = Math.max(20, Math.round((mx - r.cx) / SCALE));
+    } else if (resizeHandle === "bm") {
+      cfg.height = Math.max(20, Math.round((my - r.cy) / SCALE));
+    }
+    buildPropPanel();
+    renderCanvas();
+  }
+
+  // 游標樣式
+  updateCursor(mx, my);
+}
+
+function onMouseUp() {
+  isDragging   = false;
+  isResizing   = false;
+  resizeHandle = null;
+}
+
+function updateCursor(mx, my) {
+  if (!selElement) return;
+  const r = getElementRect(selElement);
+  if (!r) return;
+  const handles = getResizeHandles(r);
+  for (const [, hx, hy] of handles) {
+    if (Math.abs(mx - hx) < 8 && Math.abs(my - hy) < 8) {
+      canvas.style.cursor = "se-resize"; return;
+    }
+  }
+  if (mx >= r.cx && mx <= r.cx + r.cw && my >= r.cy && my <= r.cy + r.ch) {
+    canvas.style.cursor = "move"; return;
+  }
+  canvas.style.cursor = "default";
+}
+
+function getResizeHandles({ cx, cy, cw, ch }) {
+  return [
+    ["br", cx + cw, cy + ch],
+    ["mr", cx + cw, cy + ch / 2],
+    ["bm", cx + cw / 2, cy + ch],
+  ];
+}
+
+// ── 載入底圖 ──────────────────────────────────────────────
+function loadBgAndRender() {
+  const src = editConfig[selTmplKey].file;
+  bgImage = null;
+  const img = new Image();
+  img.onload  = () => { bgImage = img; renderCanvas(); };
+  img.onerror = () => { bgImage = null; renderCanvas(); };
+  img.src = src + "?t=" + Date.now();
+}
+
+// ── 渲染畫布 ──────────────────────────────────────────────
+function renderCanvas() {
+  ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+
+  // 底圖
+  if (bgImage) {
+    ctx.drawImage(bgImage, 0, 0, CANVAS_SIZE, CANVAS_SIZE);
+  } else {
+    ctx.fillStyle = "#1A1D27";
+    ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+    ctx.fillStyle = "#64748B";
+    ctx.font = "14px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("底圖載入中…", CANVAS_SIZE / 2, CANVAS_SIZE / 2);
+  }
+
+  // 繪製所有元素框
+  const keys = ["photo","name","phone","brand","branch"];
+  keys.forEach(k => {
+    const cfg = editConfig[selTmplKey]?.[k];
+    if (!cfg || cfg === null) return;
+    const r = getElementRect(k);
+    if (!r) return;
+    drawElementBox(r, k, k === selElement);
+  });
+
+  document.getElementById("canvas-hint").textContent =
+    selElement
+      ? `${ELEMENT_LABELS[selElement]}：拖動移動位置，拖動角落調整大小`
+      : "點選元素框或左側列表選取";
+}
+
+function drawElementBox({ cx, cy, cw, ch }, key, isActive) {
+  const color = ELEMENT_COLORS[key];
+
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth   = isActive ? 2.5 : 1.5;
+  ctx.setLineDash(isActive ? [] : [5, 3]);
+  ctx.globalAlpha = isActive ? 1 : 0.6;
+  ctx.strokeRect(cx, cy, cw, ch);
+
+  // 填色
+  ctx.fillStyle = color;
+  ctx.globalAlpha = isActive ? 0.15 : 0.06;
+  ctx.fillRect(cx, cy, cw, ch);
+
+  // 標籤
+  ctx.globalAlpha = 1;
+  ctx.setLineDash([]);
+  ctx.fillStyle = color;
+  ctx.font = "bold 11px sans-serif";
+  ctx.textAlign = "left";
+  ctx.textBaseline = "top";
+  ctx.fillText(ELEMENT_LABELS[key], cx + 4, cy + 4);
+
+  // 座標
+  ctx.font = "10px sans-serif";
+  ctx.fillStyle = "rgba(255,255,255,0.7)";
+  const cfg = editConfig[selTmplKey][key];
+  ctx.fillText(`(${cfg.x}, ${cfg.y})`, cx + 4, cy + 18);
+
+  // resize 控制點
+  if (isActive) {
+    const handles = getResizeHandles({ cx, cy, cw, ch });
+    handles.forEach(([, hx, hy]) => {
+      ctx.fillStyle = "#fff";
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([]);
+      ctx.globalAlpha = 1;
+      ctx.beginPath();
+      ctx.arc(hx, hy, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+    });
+  }
+
+  ctx.restore();
+}
+
+function renderPreview() {
+  renderCanvas();
+}
+
+// ── 儲存 config.js ────────────────────────────────────────
+async function saveConfig() {
+  setSaveStatus("儲存中… <span class='spinner'></span>", "");
+  document.getElementById("btn-save").disabled = true;
+
+  // 產出新的 config.js 內容
+  const configContent = generateConfigJS();
+
+  try {
+    const res = await fetch(ADMIN_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        action: "updateConfig",
+        password: adminPassword,
+        content: configContent
+      })
+    });
+    const data = await res.json();
+    if (data.ok) {
+      setSaveStatus("✅ 已成功寫回 GitHub！套圖工具將在約 1 分鐘後生效。", "ok");
+    } else {
+      setSaveStatus("❌ 寫入失敗：" + data.error, "err");
+    }
+  } catch (err) {
+    setSaveStatus("❌ 網路錯誤：" + err.message, "err");
+  } finally {
+    document.getElementById("btn-save").disabled = false;
+  }
+}
+
+function setSaveStatus(html, type) {
+  const el = document.getElementById("save-status");
+  el.innerHTML = html;
+  el.className = type;
+}
+
+function generateConfigJS() {
+  const indent = (obj, level) => {
+    if (obj === null) return "null";
+    if (typeof obj !== "object") return JSON.stringify(obj);
+    const sp = "  ".repeat(level);
+    const inner = Object.entries(obj)
+      .map(([k, v]) => `${sp}  ${k}: ${indent(v, level + 1)}`)
+      .join(",\n");
+    return `{\n${inner},\n${sp}}`;
+  };
+
+  let out = `// ============================================================\n`;
+  out += `//  config.js — 套圖工具模板設定（由管理者工具產生）\n`;
+  out += `// ============================================================\n\n`;
+  out += `const TEMPLATES = {\n\n`;
+
+  Object.entries(editConfig).forEach(([key, tmpl]) => {
+    out += `  ${key}: {\n`;
+    out += `    label: ${JSON.stringify(tmpl.label)},\n`;
+    out += `    file: ${JSON.stringify(tmpl.file)},\n\n`;
+    ["photo","name","phone","brand","branch"].forEach(field => {
+      const v = tmpl[field];
+      out += `    ${field}: `;
+      if (v === null) {
+        out += `null,\n`;
+      } else if (typeof v === "object") {
+        out += `{\n`;
+        Object.entries(v).forEach(([fk, fv]) => {
+          out += `      ${fk}: ${JSON.stringify(fv)},\n`;
+        });
+        out += `    },\n`;
+      }
+      out += `\n`;
+    });
+    out += `  },\n\n`;
+  });
+
+  out += `};\n\n`;
+  out += `const API_URL = ${JSON.stringify(API_URL)};\n`;
+  out += `const FONT_FAMILY = ${JSON.stringify(FONT_FAMILY)};\n\n`;
+  out += `// 品牌 Logo 對照表\n`;
+  out += `const BRAND_LOGOS = `;
+  out += JSON.stringify(BRAND_LOGOS, null, 2) + ";\n";
+
+  return out;
+}
+</script>
+</body>
+</html>
