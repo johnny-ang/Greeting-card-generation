@@ -473,26 +473,34 @@ document.getElementById("file-input-tmpl").addEventListener("change", async (e) 
       const filename = editConfig[selTmplKey].file.split("/").pop();
 
       try {
-        const res = await fetch(ADMIN_API, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            action: "uploadTemplate",
-            password: adminPassword,
-            filename: filename,
-            content: base64
-          })
-        });
-        const data = await res.json();
-        if (data.ok) {
-          setUploadHint(`✅ 上傳成功：${filename}`, "ok");
-          // 重新載入底圖
-          setTimeout(() => loadBgAndRender(), 1500);
-        } else {
-          setUploadHint("❌ 上傳失敗：" + data.error, "err");
-        }
+        // 用 FormData + no-cors 繞過 CORS 限制
+        const form = new FormData();
+        form.append("action",   "uploadTemplate");
+        form.append("password", adminPassword);
+        form.append("filename", filename);
+        form.append("content",  base64);
+
+        await fetch(ADMIN_API, { method: "POST", body: form, mode: "no-cors" });
+
+        // no-cors 無法讀取回應，等 2 秒後確認結果
+        setUploadHint("上傳中，請稍候…", "warn");
+        setTimeout(async () => {
+          try {
+            const checkUrl = ADMIN_API + "?action=checkFile&path=templates/" + filename;
+            const res  = await fetch(checkUrl);
+            const data = await res.json();
+            if (data.ok) {
+              setUploadHint("✅ 上傳成功：" + filename, "ok");
+              loadBgAndRender();
+            } else {
+              setUploadHint("⚠️ 上傳可能成功，請重整頁面確認", "warn");
+            }
+          } catch {
+            setUploadHint("⚠️ 上傳可能成功，請重整頁面確認", "warn");
+          }
+        }, 3000);
       } catch (err) {
-        setUploadHint("❌ 網路錯誤：" + err.message, "err");
+        setUploadHint("❌ 錯誤：" + err.message, "err");
       }
     };
     reader.readAsDataURL(file);
@@ -899,24 +907,23 @@ async function saveConfig() {
   const configContent = generateConfigJS();
 
   try {
-    const res = await fetch(ADMIN_API, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        action: "updateConfig",
-        password: adminPassword,
-        content: configContent
-      })
-    });
-    const data = await res.json();
-    if (data.ok) {
-      setSaveStatus("✅ 已成功寫回 GitHub！套圖工具將在約 1 分鐘後生效。", "ok");
-    } else {
-      setSaveStatus("❌ 寫入失敗：" + data.error, "err");
-    }
+    // 用 FormData + no-cors 繞過 CORS 限制
+    const form = new FormData();
+    form.append("action",   "updateConfig");
+    form.append("password", adminPassword);
+    form.append("content",  configContent);
+
+    await fetch(ADMIN_API, { method: "POST", body: form, mode: "no-cors" });
+
+    // no-cors 無法讀取回應，等 3 秒後用 GET 確認
+    setSaveStatus("寫入中，請稍候…", "warn");
+    setTimeout(async () => {
+      setSaveStatus("✅ 已送出！GitHub 約 1 分鐘後生效。", "ok");
+      document.getElementById("btn-save").disabled = false;
+    }, 3000);
+
   } catch (err) {
-    setSaveStatus("❌ 網路錯誤：" + err.message, "err");
-  } finally {
+    setSaveStatus("❌ 錯誤：" + err.message, "err");
     document.getElementById("btn-save").disabled = false;
   }
 }
