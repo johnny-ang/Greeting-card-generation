@@ -317,6 +317,9 @@
 
 <script src="config.js"></script>
 <script>
+// ── 設定（最先宣告，避免 TDZ 問題）──────────────────────
+const ADMIN_API = "https://script.google.com/macros/s/AKfycbxfPQGuZF-rHxt3wDOnepqjiWgLM5C5UQYqz0eikacnLT6mG_GCb0mTnxA3P6sN-9SW/exec";  // ← 填入
+
 // ── JSONP 工具函式（繞過 CORS）────────────────────────────
 function jsonpRequest(params) {
   return new Promise((resolve, reject) => {
@@ -344,10 +347,7 @@ function jsonpRequest(params) {
   });
 }
 
-// ── 設定 ──────────────────────────────────────────────────
-const ADMIN_API = "https://script.google.com/macros/s/AKfycbyjDgDTrmT8mcFhmT9P2K-84TRFXCrSYCosWc8-NDQ/dev";  // ← 填入
-
-// 元素顏色對照
+// ── 元素顏色對照
 const ELEMENT_COLORS = {
   photo:  "#EF4444",
   name:   "#3B82F6",
