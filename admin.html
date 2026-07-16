@@ -317,8 +317,35 @@
 
 <script src="config.js"></script>
 <script>
+// ── JSONP 工具函式（繞過 CORS）────────────────────────────
+function jsonpRequest(params) {
+  return new Promise((resolve, reject) => {
+    const cbName = "cb_" + Date.now() + "_" + Math.random().toString(36).slice(2);
+    const script = document.createElement("script");
+
+    window[cbName] = (data) => {
+      delete window[cbName];
+      script.remove();
+      resolve(data);
+    };
+
+    const qs = Object.entries({ ...params, callback: cbName })
+      .map(([k, v]) => encodeURIComponent(k) + "=" + encodeURIComponent(v))
+      .join("&");
+
+    script.onerror = () => {
+      delete window[cbName];
+      script.remove();
+      reject(new Error("JSONP 請求失敗"));
+    };
+
+    script.src = ADMIN_API + "?" + qs;
+    document.head.appendChild(script);
+  });
+}
+
 // ── 設定 ──────────────────────────────────────────────────
-const ADMIN_API = "https://script.google.com/macros/s/AKfycbxfPQGuZF-rHxt3wDOnepqjiWgLM5C5UQYqz0eikacnLT6mG_GCb0mTnxA3P6sN-9SW/exec";  // ← 填入
+const ADMIN_API = "貼上你的_Apps_Script_Web_API_網址";  // ← 填入
 
 // 元素顏色對照
 const ELEMENT_COLORS = {
@@ -473,32 +500,38 @@ document.getElementById("file-input-tmpl").addEventListener("change", async (e) 
       const filename = editConfig[selTmplKey].file.split("/").pop();
 
       try {
-        // 用 FormData + no-cors 繞過 CORS 限制
-        const form = new FormData();
-        form.append("action",   "uploadTemplate");
-        form.append("password", adminPassword);
-        form.append("filename", filename);
-        form.append("content",  base64);
+        // 用 JSONP 分段上傳底圖
+        setUploadHint("上傳中（0%）…", "warn");
+        const CHUNK = 1500;
+        const total = Math.ceil(base64.length / CHUNK);
 
-        await fetch(ADMIN_API, { method: "POST", body: form, mode: "no-cors" });
+        for (let i = 0; i < total; i++) {
+          const chunk = base64.slice(i * CHUNK, (i + 1) * CHUNK);
+          const result = await jsonpRequest({
+            action: "storeChunk",
+            password: adminPassword,
+            filename: filename,
+            chunk: chunk,
+            index: i,
+            total: total
+          });
 
-        // no-cors 無法讀取回應，等 2 秒後確認結果
-        setUploadHint("上傳中，請稍候…", "warn");
-        setTimeout(async () => {
-          try {
-            const checkUrl = ADMIN_API + "?action=checkFile&path=templates/" + filename;
-            const res  = await fetch(checkUrl);
-            const data = await res.json();
-            if (data.ok) {
-              setUploadHint("✅ 上傳成功：" + filename, "ok");
-              loadBgAndRender();
-            } else {
-              setUploadHint("⚠️ 上傳可能成功，請重整頁面確認", "warn");
-            }
-          } catch {
-            setUploadHint("⚠️ 上傳可能成功，請重整頁面確認", "warn");
+          const pct = Math.round((i + 1) / total * 100);
+          setUploadHint("上傳中（" + pct + "%）…", "warn");
+
+          if (!result.ok && i < total - 1) {
+            setUploadHint("❌ 上傳失敗（第 " + i + " 段）：" + result.error, "err");
+            return;
           }
-        }, 3000);
+          if (i === total - 1) {
+            if (result.ok) {
+              setUploadHint("✅ 上傳成功：" + filename, "ok");
+              setTimeout(() => loadBgAndRender(), 2000);
+            } else {
+              setUploadHint("❌ 寫入 GitHub 失敗：" + result.error, "err");
+            }
+          }
+        }
       } catch (err) {
         setUploadHint("❌ 錯誤：" + err.message, "err");
       }
@@ -907,23 +940,44 @@ async function saveConfig() {
   const configContent = generateConfigJS();
 
   try {
-    // 用 FormData + no-cors 繞過 CORS 限制
-    const form = new FormData();
-    form.append("action",   "updateConfig");
-    form.append("password", adminPassword);
-    form.append("content",  configContent);
+    setSaveStatus("傳送設定中…", "warn");
 
-    await fetch(ADMIN_API, { method: "POST", body: form, mode: "no-cors" });
+    // Step 1: 用 JSONP 把 config 內容暫存到 Sheets（分段避免 URL 過長）
+    const CHUNK = 1500;
+    const chunks = [];
+    for (let i = 0; i < configContent.length; i += CHUNK) {
+      chunks.push(configContent.slice(i, i + CHUNK));
+    }
 
-    // no-cors 無法讀取回應，等 3 秒後用 GET 確認
-    setSaveStatus("寫入中，請稍候…", "warn");
-    setTimeout(async () => {
-      setSaveStatus("✅ 已送出！GitHub 約 1 分鐘後生效。", "ok");
+    // 先清空後重存，用 storeConfig 一次性傳（config 通常 < 8KB）
+    const storeResult = await jsonpRequest({
+      action: "storeConfig",
+      password: adminPassword,
+      content: configContent
+    });
+
+    if (!storeResult.ok) {
+      setSaveStatus("❌ 暫存失敗：" + storeResult.error, "err");
       document.getElementById("btn-save").disabled = false;
-    }, 3000);
+      return;
+    }
 
+    setSaveStatus("寫入 GitHub 中…", "warn");
+
+    // Step 2: 觸發寫入 GitHub
+    const saveResult = await jsonpRequest({
+      action: "saveConfig",
+      password: adminPassword
+    });
+
+    if (saveResult.ok) {
+      setSaveStatus("✅ 已成功寫回 GitHub！套圖工具約 1 分鐘後生效。", "ok");
+    } else {
+      setSaveStatus("❌ 寫入失敗：" + saveResult.error, "err");
+    }
   } catch (err) {
     setSaveStatus("❌ 錯誤：" + err.message, "err");
+  } finally {
     document.getElementById("btn-save").disabled = false;
   }
 }
