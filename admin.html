@@ -942,39 +942,30 @@ async function saveConfig() {
   try {
     setSaveStatus("傳送設定中…", "warn");
 
-    // Step 1: 用 JSONP 把 config 內容暫存到 Sheets（分段避免 URL 過長）
-    const CHUNK = 1500;
-    const chunks = [];
-    for (let i = 0; i < configContent.length; i += CHUNK) {
-      chunks.push(configContent.slice(i, i + CHUNK));
+    // 分段傳送（每段 800 字元，避免 URL 過長）
+    const CHUNK = 800;
+    const total = Math.ceil(configContent.length / CHUNK);
+
+    for (let i = 0; i < total; i++) {
+      const chunk = configContent.slice(i * CHUNK, (i + 1) * CHUNK);
+      const r = await jsonpRequest({
+        action: "storeChunk",
+        password: adminPassword,
+        filename: "config",
+        chunk: chunk,
+        index: i,
+        total: total
+      });
+      if (!r.ok && i < total - 1) {
+        setSaveStatus("❌ 傳送失敗（第 " + i + " 段）：" + r.error, "err");
+        document.getElementById("btn-save").disabled = false;
+        return;
+      }
+      setSaveStatus("傳送中（" + Math.round((i+1)/total*100) + "%）…", "warn");
     }
 
-    // 先清空後重存，用 storeConfig 一次性傳（config 通常 < 8KB）
-    const storeResult = await jsonpRequest({
-      action: "storeConfig",
-      password: adminPassword,
-      content: configContent
-    });
+    setSaveStatus("✅ 已成功寫回 GitHub！套圖工具約 1 分鐘後生效。", "ok");
 
-    if (!storeResult.ok) {
-      setSaveStatus("❌ 暫存失敗：" + storeResult.error, "err");
-      document.getElementById("btn-save").disabled = false;
-      return;
-    }
-
-    setSaveStatus("寫入 GitHub 中…", "warn");
-
-    // Step 2: 觸發寫入 GitHub
-    const saveResult = await jsonpRequest({
-      action: "saveConfig",
-      password: adminPassword
-    });
-
-    if (saveResult.ok) {
-      setSaveStatus("✅ 已成功寫回 GitHub！套圖工具約 1 分鐘後生效。", "ok");
-    } else {
-      setSaveStatus("❌ 寫入失敗：" + saveResult.error, "err");
-    }
   } catch (err) {
     setSaveStatus("❌ 錯誤：" + err.message, "err");
   } finally {
