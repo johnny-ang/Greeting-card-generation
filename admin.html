@@ -318,7 +318,7 @@
 <script src="config.js"></script>
 <script>
 // ── 設定 ──────────────────────────────────────────────────
-const ADMIN_API = "https://script.google.com/macros/s/AKfycbxfPQGuZF-rHxt3wDOnepqjiWgLM5C5UQYqz0eikacnLT6mG_GCb0mTnxA3P6sN-9SW/exec";  // ← 填入
+const ADMIN_API = "貼上你的_Apps_Script_Web_API_網址";  // ← 填入
 
 // 元素顏色對照
 const ELEMENT_COLORS = {
@@ -361,25 +361,27 @@ async function doLogin() {
   const pw = document.getElementById("pw-input").value;
   if (!pw) return;
 
-  // 驗證：送一個 ping 到 Apps Script
+  document.getElementById("login-error").textContent = "驗證中…";
+
+  // 改用 GET + query string 繞過 CORS preflight
   try {
-    const res = await fetch(ADMIN_API, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action: "getConfig", password: pw })
-    });
+    const url = ADMIN_API + "?action=adminPing&password=" + encodeURIComponent(pw);
+    const res  = await fetch(url, { method: "GET" });
     const data = await res.json();
-    if (data.ok) {
+
+    if (data.ok && data.auth) {
       adminPassword = pw;
       document.getElementById("login-screen").style.display = "none";
       document.getElementById("app").style.display = "flex";
       document.getElementById("app").style.flexDirection = "column";
       initApp();
-    } else {
+    } else if (data.ok === false && data.error === "密碼錯誤") {
       document.getElementById("login-error").textContent = "密碼錯誤，請再試一次";
+    } else {
+      document.getElementById("login-error").textContent = "驗證失敗，請重試";
     }
   } catch (e) {
-    document.getElementById("login-error").textContent = "無法連線，請確認網路";
+    document.getElementById("login-error").textContent = "無法連線，請確認 API 網址是否正確";
   }
 }
 
