@@ -181,16 +181,16 @@ const TEMPLATES = {
     file: "templates/template_d.jpg",
 
     photo: {
-      x: 637,
-      y: 397,
-      width: 380,
-      height: 642,
+      x: 632,
+      y: 42,
+      width: 344,
+      height: 311,
       fit: "contain",
     },
 
     name: {
-      x: 510,
-      y: 840,
+      x: 424,
+      y: 954,
       size: 38,
       weight: "700",
       color: "#1A3A6B",
@@ -200,11 +200,13 @@ const TEMPLATES = {
       align: "left",
       letterSpacing: 20,
       maxWidth: 280,
+      width: 228,
+      height: 71,
     },
 
     phone: {
-      x: 510,
-      y: 905,
+      x: 673,
+      y: 955,
       size: 38,
       weight: "700",
       color: "#1A3A6B",
@@ -213,18 +215,20 @@ const TEMPLATES = {
       glow: false,
       align: "left",
       letterSpacing: 0,
+      width: 349,
+      height: 70,
     },
 
     brand: {
-      x: 61,
-      y: 795,
-      width: 400,
-      height: null,
+      x: 44,
+      y: 845,
+      width: 392,
+      height: 83,
     },
 
     branch: {
-      x: 261,
-      y: 945,
+      x: 44,
+      y: 952,
       size: 38,
       weight: "700",
       color: "#1A3A6B",
@@ -233,6 +237,8 @@ const TEMPLATES = {
       glow: false,
       align: "center",
       letterSpacing: 0,
+      width: 364,
+      height: 75,
     },
 
   },
