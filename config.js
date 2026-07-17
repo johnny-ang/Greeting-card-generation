@@ -1,7 +1,5 @@
 // ============================================================
-//  config.js — 套圖工具模板設定（比例座標版）
-//  所有座標、尺寸、字體大小均為 0~1 比例值
-//  程式會自動乘以底圖實際尺寸換算為像素
+//  config.js — 套圖工具模板設定（由管理者工具產生）
 // ============================================================
 
 const TEMPLATES = {
@@ -183,16 +181,16 @@ const TEMPLATES = {
     file: "templates/template_d.jpg",
 
     photo: {
-      x: 0.7058,
-      y: 0.5865,
+      x: 0.6358,
+      y: 0.0748,
       width: 0.2942,
       height: 0.4135,
       fit: "contain",
     },
 
     name: {
-      x: 0.4904,
-      y: 0.8077,
+      x: 0.6337,
+      y: 0.4294,
       size: 0.0365,
       weight: "700",
       color: "#1A3A6B",
@@ -202,11 +200,13 @@ const TEMPLATES = {
       align: "left",
       letterSpacing: 0.0192,
       maxWidth: 0.2692,
+      width: 0.2955,
+      height: 0.0827,
     },
 
     phone: {
-      x: 0.4904,
-      y: 0.8702,
+      x: 0.5771,
+      y: 0.5152,
       size: 0.0365,
       weight: "700",
       color: "#1A3A6B",
@@ -215,18 +215,20 @@ const TEMPLATES = {
       glow: false,
       align: "left",
       letterSpacing: 0,
+      width: 0.3971,
+      height: 0.0819,
     },
 
     brand: {
-      x: 0.0587,
-      y: 0.7212,
-      width: 0.3846,
-      height: null,
+      x: 0.627,
+      y: 0.0145,
+      width: 0.3155,
+      height: 0.0742,
     },
 
     branch: {
-      x: 0.251,
-      y: 0.875,
+      x: 0.3543,
+      y: 0.5166,
       size: 0.0365,
       weight: "700",
       color: "#1A3A6B",
@@ -235,6 +237,8 @@ const TEMPLATES = {
       glow: false,
       align: "center",
       letterSpacing: 0,
+      width: 0.2132,
+      height: 0.0788,
     },
 
   },
@@ -247,5 +251,5 @@ const FONT_FAMILY = "Jf Open粉圓";
 // 品牌 Logo 對照表
 const BRAND_LOGOS = {
   "永慶不動產": "https://lh3.googleusercontent.com/d/1LcuW_637pHoTXDPW23Rk7UYZSjunWlA0",
-  "永義房屋":   "https://lh3.googleusercontent.com/d/1EFqWLqVE69s1yANFGcWauNjkCGtiI5Vc",
+  "永義房屋": "https://lh3.googleusercontent.com/d/1EFqWLqVE69s1yANFGcWauNjkCGtiI5Vc"
 };
