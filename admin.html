@@ -682,7 +682,8 @@ function makePropField(cfg, f) {
   }
 
   input.addEventListener("input", () => {
-    const val = f.type === "number" ? Number(input.value) : input.value;
+    let val = f.type === "number" ? parseFloat(input.value) : input.value;
+    if (f.type === "number" && isNaN(val)) val = 0;
     cfg[f.key] = val;
     updateElementCoords();
     renderCanvas();
@@ -721,11 +722,17 @@ function getElementRect(key) {
   const cfg = editConfig[selTmplKey]?.[key];
   if (!cfg || cfg === null) return null;
 
-  const cx = (cfg.x || 0) * SCALE;
-  const cy = (cfg.y || 0) * SCALE;
-  const cw = ((cfg.width  || 100)) * SCALE;
-  const ch = ((cfg.height || 50 )) * SCALE;
-  return { cx, cy, cw, ch };
+  // 比例座標 × 底圖實際尺寸 × 畫布縮放比例
+  const BW = bgImage ? (bgImage.naturalWidth  || bgImage.width)  : 1040;
+  const BH = bgImage ? (bgImage.naturalHeight || bgImage.height) : 1040;
+  const scaleX = CANVAS_SIZE / BW;
+  const scaleY = CANVAS_SIZE / BH;
+
+  const cx = (cfg.x     || 0)   * BW * scaleX;
+  const cy = (cfg.y     || 0)   * BH * scaleY;
+  const cw = (cfg.width  || 0.1) * BW * scaleX;
+  const ch = (cfg.height || 0.05) * BH * scaleY;
+  return { cx, cy, cw, ch, BW, BH, scaleX, scaleY };
 }
 
 // ── 拖拉事件 ──────────────────────────────────────────────
@@ -780,9 +787,10 @@ function onMouseMove(e) {
   const cfg = editConfig[selTmplKey][selElement];
 
   if (isDragging && cfg) {
-    const nx = Math.max(0, Math.round((mx - dragOffX) / SCALE));
-    const ny = Math.max(0, Math.round((my - dragOffY) / SCALE));
-    cfg.x = nx; cfg.y = ny;
+    const r = getElementRect(selElement);
+    // 換算回比例座標
+    cfg.x = Math.max(0, Math.round(((mx - dragOffX) / r.scaleX / r.BW) * 10000) / 10000);
+    cfg.y = Math.max(0, Math.round(((my - dragOffY) / r.scaleY / r.BH) * 10000) / 10000);
     updateElementCoords();
     buildPropPanel();
     renderCanvas();
@@ -791,12 +799,12 @@ function onMouseMove(e) {
   if (isResizing && cfg) {
     const r = getElementRect(selElement);
     if (resizeHandle === "br") {
-      cfg.width  = Math.max(20, Math.round((mx - r.cx) / SCALE));
-      cfg.height = Math.max(20, Math.round((my - r.cy) / SCALE));
+      cfg.width  = Math.max(0.01, Math.round(((mx - r.cx) / r.scaleX / r.BW) * 10000) / 10000);
+      cfg.height = Math.max(0.01, Math.round(((my - r.cy) / r.scaleY / r.BH) * 10000) / 10000);
     } else if (resizeHandle === "mr") {
-      cfg.width  = Math.max(20, Math.round((mx - r.cx) / SCALE));
+      cfg.width  = Math.max(0.01, Math.round(((mx - r.cx) / r.scaleX / r.BW) * 10000) / 10000);
     } else if (resizeHandle === "bm") {
-      cfg.height = Math.max(20, Math.round((my - r.cy) / SCALE));
+      cfg.height = Math.max(0.01, Math.round(((my - r.cy) / r.scaleY / r.BH) * 10000) / 10000);
     }
     buildPropPanel();
     renderCanvas();
@@ -848,11 +856,18 @@ function loadBgAndRender() {
 
 // ── 渲染畫布 ──────────────────────────────────────────────
 function renderCanvas() {
-  ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+  // 依底圖比例動態調整畫布尺寸
+  const BW = bgImage ? (bgImage.naturalWidth  || bgImage.width)  : 1040;
+  const BH = bgImage ? (bgImage.naturalHeight || bgImage.height) : 1040;
+  const ratio = BH / BW;
+  canvas.width  = CANVAS_SIZE;
+  canvas.height = Math.round(CANVAS_SIZE * ratio);
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // 底圖
   if (bgImage) {
-    ctx.drawImage(bgImage, 0, 0, CANVAS_SIZE, CANVAS_SIZE);
+    ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
   } else {
     ctx.fillStyle = "#1A1D27";
     ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
