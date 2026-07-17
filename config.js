@@ -166,10 +166,10 @@ const TEMPLATES = {
     },
 
     brand: {
-      x: 0.057,
-      y: 0.816,
-      width: 0.3846,
-      height: null,
+      x: 0.0653,
+      y: 0.8027,
+      width: 0.3455,
+      height: 0.0548,
     },
 
     branch: null,
