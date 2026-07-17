@@ -189,8 +189,8 @@ const TEMPLATES = {
     },
 
     name: {
-      x: 0.7471,
-      y: 0.3061,
+      x: 0.8054,
+      y: 0.3128,
       size: 0.0365,
       weight: "700",
       color: "#1A3A6B",
