@@ -68,7 +68,7 @@ const TEMPLATES = {
   },
 
   B: {
-    label: "新青安2.0",
+    label: "居家防颱宣導",
     file: "templates/template_b.jpg",
 
     photo: {
@@ -179,7 +179,7 @@ const TEMPLATES = {
   },
 
   D: {
-    label: "注意熱傷害",
+    label: "青安3.0",
     file: "templates/template_d.jpg",
 
     photo: {
