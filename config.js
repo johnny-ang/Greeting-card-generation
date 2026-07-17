@@ -181,7 +181,7 @@ const TEMPLATES = {
     file: "templates/template_d.jpg",
 
     photo: {
-      x: 0.6358,
+      x: 0.6441,
       y: 0.0748,
       width: 0.2984,
       height: 0.261,
@@ -189,8 +189,8 @@ const TEMPLATES = {
     },
 
     name: {
-      x: 0.6387,
-      y: 0.2827,
+      x: 0.6454,
+      y: 0.2783,
       size: 0.0365,
       weight: "700",
       color: "#1A3A6B",
@@ -205,7 +205,7 @@ const TEMPLATES = {
     },
 
     phone: {
-      x: 0.5804,
+      x: 0.5771,
       y: 0.3396,
       size: 0.0365,
       weight: "700",
@@ -220,15 +220,15 @@ const TEMPLATES = {
     },
 
     brand: {
-      x: 0.627,
-      y: 0.0145,
+      x: 0.6337,
+      y: 0.0134,
       width: 0.3155,
       height: 0.0624,
     },
 
     branch: {
       x: 0.3593,
-      y: 0.3432,
+      y: 0.3399,
       size: 0.0365,
       weight: "700",
       color: "#1A3A6B",
