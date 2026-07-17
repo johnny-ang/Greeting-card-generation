@@ -258,20 +258,48 @@ function initTool() {
       try {
         await document.fonts.ready;
         const bg = await loadImage(tmpl.file);
-        canvas.width  = 1040;
-        canvas.height = 1040;
-        ctx.drawImage(bg, 0, 0, 1040, 1040);
+
+        // 自動偵測底圖尺寸
+        const W = bg.naturalWidth  || bg.width;
+        const H = bg.naturalHeight || bg.height;
+        canvas.width  = W;
+        canvas.height = H;
+        ctx.drawImage(bg, 0, 0, W, H);
         setStatus("套入業務資料中…");
+
+        // 比例座標換算
+        function px(cfg) {
+          if (!cfg) return null;
+          return {
+            x:      cfg.x      * W,
+            y:      cfg.y      * H,
+            width:  cfg.width  != null ? cfg.width  * W : null,
+            height: cfg.height != null ? cfg.height * H : null,
+            fit:    cfg.fit,
+          };
+        }
+        function pxText(cfg) {
+          if (!cfg) return null;
+          const base = Math.min(W, H);
+          return Object.assign({}, cfg, {
+            x:             cfg.x             * W,
+            y:             cfg.y             * H,
+            size:          cfg.size          * base,
+            strokeWidth:   cfg.strokeWidth   * base,
+            letterSpacing: cfg.letterSpacing * base,
+            maxWidth:      cfg.maxWidth != null ? cfg.maxWidth * W : null,
+          });
+        }
 
         if (selAgent.photo_url) {
           try {
             const photo = await loadPhotoImage(selAgent.photo_url);
-            drawRectPhoto(photo, tmpl.photo);
+            drawRectPhoto(photo, px(tmpl.photo));
           } catch {
-            drawRectPlaceholder(tmpl.photo, selAgent.name);
+            drawRectPlaceholder(px(tmpl.photo), selAgent.name);
           }
         } else {
-          drawRectPlaceholder(tmpl.photo, selAgent.name);
+          drawRectPlaceholder(px(tmpl.photo), selAgent.name);
         }
 
         [
@@ -280,7 +308,7 @@ function initTool() {
           { cfg: tmpl.branch, text: selAgent.branch || "" },
         ].forEach(({ cfg, text }) => {
           if (!cfg || !text) return;
-          drawText(cfg, text);
+          drawText(pxText(cfg), text);
         });
 
         // brand 圖片（依 agent.brand 查 BRAND_LOGOS 對照表，等比例縮放）
@@ -289,21 +317,16 @@ function initTool() {
           if (logoUrl) {
             try {
               const brandImg = await loadPhotoImage(logoUrl);
-              const { x, y, width, height } = tmpl.brand;
-              if (height === null) {
-                // 依 width 等比例自動計算高度
-                const scale = width / brandImg.width;
-                const sw = width;
-                const sh = brandImg.height * scale;
-                ctx.drawImage(brandImg, x, y, sw, sh);
+              const b  = px(tmpl.brand);
+              const bw = b.width;
+              if (b.height === null) {
+                const scale = bw / brandImg.width;
+                ctx.drawImage(brandImg, b.x, b.y, bw, brandImg.height * scale);
               } else {
-                // contain 模式：等比例縮放置中
-                const scale = Math.min(width / brandImg.width, height / brandImg.height);
+                const scale = Math.min(bw / brandImg.width, b.height / brandImg.height);
                 const sw = brandImg.width  * scale;
                 const sh = brandImg.height * scale;
-                const dx = x + (width  - sw) / 2;
-                const dy = y + (height - sh) / 2;
-                ctx.drawImage(brandImg, dx, dy, sw, sh);
+                ctx.drawImage(brandImg, b.x + (bw - sw) / 2, b.y + (b.height - sh) / 2, sw, sh);
               }
             } catch (e) {
               console.warn("brand logo 載入失敗:", e);
