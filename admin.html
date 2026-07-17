@@ -725,12 +725,16 @@ function getElementRect(key) {
   // 比例座標 × 底圖實際尺寸 × 畫布縮放比例
   const BW = bgImage ? (bgImage.naturalWidth  || bgImage.width)  : 1040;
   const BH = bgImage ? (bgImage.naturalHeight || bgImage.height) : 1040;
-  const scaleX = CANVAS_SIZE / BW;
-  const scaleY = CANVAS_SIZE / BH;
 
-  const cx = (cfg.x     || 0)   * BW * scaleX;
-  const cy = (cfg.y     || 0)   * BH * scaleY;
-  const cw = (cfg.width  || 0.1) * BW * scaleX;
+  // 畫布寬固定 CANVAS_SIZE，高依底圖比例動態調整
+  const canvasW = CANVAS_SIZE;
+  const canvasH = Math.round(CANVAS_SIZE * BH / BW);
+  const scaleX  = canvasW / BW;
+  const scaleY  = canvasH / BH;
+
+  const cx = (cfg.x      || 0)    * BW * scaleX;
+  const cy = (cfg.y      || 0)    * BH * scaleY;
+  const cw = (cfg.width  || 0.1)  * BW * scaleX;
   const ch = (cfg.height || 0.05) * BH * scaleY;
   return { cx, cy, cw, ch, BW, BH, scaleX, scaleY };
 }
@@ -870,11 +874,11 @@ function renderCanvas() {
     ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
   } else {
     ctx.fillStyle = "#1A1D27";
-    ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "#64748B";
     ctx.font = "14px sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText("底圖載入中…", CANVAS_SIZE / 2, CANVAS_SIZE / 2);
+    ctx.fillText("底圖載入中…", canvas.width / 2, canvas.height / 2);
   }
 
   // 繪製所有元素框
