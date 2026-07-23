@@ -17,8 +17,8 @@ const TEMPLATES = {
     },
 
     name: {
-      x: 0.6386,
-      y: 0.8111,
+      x: 0.7152,
+      y: 0.7811,
       size: 0.0365,
       weight: "700",
       color: "#1A3A6B",
@@ -28,13 +28,13 @@ const TEMPLATES = {
       align: "left",
       letterSpacing: 0.0192,
       maxWidth: 0.2692,
-      width: 0.3355,
-      height: 0.0776,
+      width: 0.3439,
+      height: 0.1281,
     },
 
     phone: {
-      x: 0.6404,
-      y: 0.8902,
+      x: 0.7154,
+      y: 0.9002,
       size: 0.0365,
       weight: "700",
       color: "#1A3A6B",
@@ -43,8 +43,8 @@ const TEMPLATES = {
       glow: false,
       align: "left",
       letterSpacing: 0,
-      width: 0.3337,
-      height: 0.0902,
+      width: 0.3554,
+      height: 0.1073,
     },
 
     brand: {
