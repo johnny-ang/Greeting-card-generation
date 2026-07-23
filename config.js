@@ -9,16 +9,16 @@ const TEMPLATES = {
     file: "templates/template_a.jpg",
 
     photo: {
-      x: 0.7058,
-      y: 0.5865,
-      width: 0.2942,
-      height: 0.4135,
+      x: 0.6024,
+      y: 0.2648,
+      width: 0.3784,
+      height: 0.494,
       fit: "contain",
     },
 
     name: {
-      x: 0.4904,
-      y: 0.8077,
+      x: 0.602,
+      y: 0.7461,
       size: 0.0365,
       weight: "700",
       color: "#1A3A6B",
@@ -28,11 +28,13 @@ const TEMPLATES = {
       align: "left",
       letterSpacing: 0.0192,
       maxWidth: 0.2692,
+      width: 0.3821,
+      height: 0.071,
     },
 
     phone: {
-      x: 0.4904,
-      y: 0.8702,
+      x: 0.5521,
+      y: 0.8169,
       size: 0.0365,
       weight: "700",
       color: "#1A3A6B",
@@ -41,18 +43,20 @@ const TEMPLATES = {
       glow: false,
       align: "left",
       letterSpacing: 0,
+      width: 0.4321,
+      height: 0.0952,
     },
 
     brand: {
-      x: 0.0587,
-      y: 0.7212,
-      width: 0.3846,
-      height: null,
+      x: 0.0804,
+      y: 0.9262,
+      width: 0.3604,
+      height: 0.0592,
     },
 
     branch: {
-      x: 0.251,
-      y: 0.875,
+      x: 0.4593,
+      y: 0.9267,
       size: 0.0365,
       weight: "700",
       color: "#1A3A6B",
@@ -61,6 +65,8 @@ const TEMPLATES = {
       glow: false,
       align: "center",
       letterSpacing: 0,
+      width: 0.5249,
+      height: 0.0604,
     },
 
   },
