@@ -5,7 +5,7 @@
 const TEMPLATES = {
 
   A: {
-    label: "6月戰報",
+    label: "第二季戰報",
     file: "templates/template_a.jpg",
 
     photo: {
