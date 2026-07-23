@@ -19,14 +19,14 @@ const TEMPLATES = {
     name: {
       x: 0.6352,
       y: 0.7761,
-      size: 0.05,
+      size: 0.07,
       weight: "700",
       color: "#1A3A6B",
       strokeColor: "#FFFFFF",
       strokeWidth: 0.0058,
       glow: false,
-      align: "center",
-      letterSpacing: 0.03,
+      align: "left",
+      letterSpacing: 0.04,
       maxWidth: 0.2692,
       width: 0.3439,
       height: 0.1281,
@@ -34,7 +34,7 @@ const TEMPLATES = {
 
     phone: {
       x: 0.6304,
-      y: 0.8819,
+      y: 0.9236,
       size: 0.05,
       weight: "700",
       color: "#1A3A6B",
