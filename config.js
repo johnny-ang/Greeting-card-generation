@@ -17,15 +17,15 @@ const TEMPLATES = {
     },
 
     name: {
-      x: 0.7152,
-      y: 0.7811,
-      size: 0.0365,
+      x: 0.6352,
+      y: 0.7761,
+      size: 1,
       weight: "700",
       color: "#1A3A6B",
       strokeColor: "#FFFFFF",
       strokeWidth: 0.0058,
       glow: false,
-      align: "left",
+      align: "center",
       letterSpacing: 0.0192,
       maxWidth: 0.2692,
       width: 0.3439,
@@ -33,8 +33,8 @@ const TEMPLATES = {
     },
 
     phone: {
-      x: 0.7154,
-      y: 0.9002,
+      x: 0.6304,
+      y: 0.8819,
       size: 0.0365,
       weight: "700",
       color: "#1A3A6B",
@@ -47,9 +47,27 @@ const TEMPLATES = {
       height: 0.1073,
     },
 
-    brand:  null,
+    brand: {
+      x: 0.6504,
+      y: 0.2595,
+      width: 0.3055,
+      height: 0.0476,
+    },
 
-    branch:  null,
+    branch: {
+      x: 0.6343,
+      y: 0.3134,
+      size: 0.0365,
+      weight: "700",
+      color: "#1A3A6B",
+      strokeColor: "#FFFFFF",
+      strokeWidth: 0.0058,
+      glow: false,
+      align: "center",
+      letterSpacing: 0,
+      width: 0.3415,
+      height: 0.062,
+    },
 
   },
 
