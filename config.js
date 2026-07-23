@@ -47,27 +47,9 @@ const TEMPLATES = {
       height: 0.1073,
     },
 
-    brand: {
-      x: 0.6504,
-      y: 0.2595,
-      width: 0.3055,
-      height: 0.0476,
-    },
+    brand:  null,
 
-    branch: {
-      x: 0.6343,
-      y: 0.3134,
-      size: 0.0365,
-      weight: "700",
-      color: "#1A3A6B",
-      strokeColor: "#FFFFFF",
-      strokeWidth: 0.0058,
-      glow: false,
-      align: "center",
-      letterSpacing: 0,
-      width: 0.3415,
-      height: 0.062,
-    },
+    branch:  null,
 
   },
 
