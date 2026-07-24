@@ -91,7 +91,7 @@ const TEMPLATES = {
       strokeWidth: 0.0058,
       glow: false,
       align: "left",
-      letterSpacing: 0.05,
+      letterSpacing: 0.02,
       width: 0.6454,
       height: 0.1352,
     },
