@@ -58,17 +58,17 @@ const TEMPLATES = {
     file: "templates/template_b.jpg",
 
     photo: {
-      x: 0.7058,
-      y: 0.5865,
-      width: 0.2942,
-      height: 0.4135,
+      x: 0.6958,
+      y: 0.5682,
+      width: 0.3017,
+      height: 0.421,
       fit: "contain",
     },
 
     name: {
       x: 0.3604,
       y: 0.7844,
-      size: 0.0365,
+      size: 0.08,
       weight: "700",
       color: "#1A3A6B",
       strokeColor: "#FFFFFF",
@@ -84,7 +84,7 @@ const TEMPLATES = {
     phone: {
       x: 0.0571,
       y: 0.8602,
-      size: 0.0365,
+      size: 0.08,
       weight: "700",
       color: "#1A3A6B",
       strokeColor: "#FFFFFF",
@@ -104,13 +104,13 @@ const TEMPLATES = {
     },
 
     branch: {
-      x: 0.3327,
-      y: 0.6767,
+      x: 0.491,
+      y: 0.7317,
       size: 0.0365,
       weight: "700",
       color: "#1A3A6B",
       strokeColor: "#FFFFFF",
-      strokeWidth: 0.0058,
+      strokeWidth: 0.003,
       glow: false,
       align: "center",
       letterSpacing: 0,
