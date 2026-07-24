@@ -75,7 +75,7 @@ const TEMPLATES = {
       strokeWidth: 0.0058,
       glow: false,
       align: "left",
-      letterSpacing: 0.0192,
+      letterSpacing: 0.03,
       maxWidth: 0.2692,
       width: 0.3271,
       height: 0.0677,
@@ -91,7 +91,7 @@ const TEMPLATES = {
       strokeWidth: 0.0058,
       glow: false,
       align: "left",
-      letterSpacing: 2,
+      letterSpacing: 0.05,
       width: 0.6454,
       height: 0.1352,
     },
@@ -104,8 +104,8 @@ const TEMPLATES = {
     },
 
     branch: {
-      x: 0.491,
-      y: 0.715,
+      x: 0.5043,
+      y: 0.7267,
       size: 0.0365,
       weight: "700",
       color: "#1A3A6B",
