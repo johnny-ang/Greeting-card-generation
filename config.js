@@ -18,7 +18,7 @@ const TEMPLATES = {
 
     name: {
       x: 0.6702,
-      y: 0.7827,
+      y: 0.7894,
       size: 0.07,
       weight: "700",
       color: "#1A3A6B",
@@ -33,7 +33,7 @@ const TEMPLATES = {
     },
 
     phone: {
-      x: 0.5538,
+      x: 0.4888,
       y: 0.9036,
       size: 0.07,
       weight: "700",
