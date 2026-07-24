@@ -54,7 +54,7 @@ const TEMPLATES = {
   },
 
   B: {
-    label: "居家防颱宣導",
+    label: "四季雙冠軍",
     file: "templates/template_b.jpg",
 
     photo: {
