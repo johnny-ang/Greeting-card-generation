@@ -199,8 +199,8 @@ const TEMPLATES = {
     },
 
     phone: {
-      x: 0.5305,
-      y: 0.9302,
+      x: 0.4772,
+      y: 0.9319,
       size: 0.05,
       weight: "700",
       color: "#1A3A6B",
