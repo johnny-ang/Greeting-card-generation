@@ -183,8 +183,8 @@ const TEMPLATES = {
     },
 
     name: {
-      x: 0.3638,
-      y: 0.9294,
+      x: 0.1821,
+      y: 0.9311,
       size: 0.05,
       weight: "700",
       color: "#1A3A6B",
@@ -199,8 +199,8 @@ const TEMPLATES = {
     },
 
     phone: {
-      x: 0.7205,
-      y: 0.9335,
+      x: 0.5305,
+      y: 0.9302,
       size: 0.05,
       weight: "700",
       color: "#1A3A6B",
@@ -210,7 +210,7 @@ const TEMPLATES = {
       align: "center",
       letterSpacing: 0,
       width: 0.3803,
-      height: 0.0584,
+      height: 0.064,
     },
 
     brand: {
@@ -221,8 +221,8 @@ const TEMPLATES = {
     },
 
     branch: {
-      x: 0.5294,
-      y: 0.8194,
+      x: 0.4844,
+      y: 0.8227,
       size: 0.04,
       weight: "700",
       color: "#1A3A6B",
