@@ -170,9 +170,20 @@ const TEMPLATES = {
       height: 0.091,
     },
 
-    branch: ,
-
-  },
+    branch: {
+      x: 0.4827,
+      y: 0.8527,
+      size: 0.04,
+      weight: "700",
+      color: "#1A3A6B",
+      strokeColor: "#FFFFFF",
+      strokeWidth: 0.0058,
+      glow: false,
+      align: "center",
+      letterSpacing: 0,
+      width: 0.4114,
+      height: 0.0661,
+    },
 
   D: {
     label: "青安3.0",
