@@ -125,10 +125,10 @@ const TEMPLATES = {
     file: "templates/template_c.jpg",
 
     photo: {
-      x: 0.4158,
-      y: 0.7948,
-      width: 0.1717,
-      height: 0.2023,
+      x: 0.3892,
+      y: 0.6081,
+      width: 0.2383,
+      height: 0.3107,
       fit: "contain",
     },
 
@@ -164,15 +164,15 @@ const TEMPLATES = {
     },
 
     brand: {
-      x: 0.022,
-      y: 0.8044,
+      x: 0.0237,
+      y: 0.7127,
       width: 0.3572,
       height: 0.091,
     },
 
     branch: {
-      x: 0.1927,
-      y: 0.9194,
+      x: 0.1994,
+      y: 0.8311,
       size: 0.04,
       weight: "700",
       color: "#1A3A6B",
