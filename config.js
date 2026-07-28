@@ -183,7 +183,7 @@ const TEMPLATES = {
       letterSpacing: 0,
       width: 0.4114,
       height: 0.0661,
-    },
+  },
 
   D: {
     label: "青安3.0",
