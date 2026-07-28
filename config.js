@@ -171,8 +171,8 @@ const TEMPLATES = {
     },
 
     branch: {
-      x: 0.1944,
-      y: 0.8478,
+      x: 0.1927,
+      y: 0.8528,
       size: 0.04,
       weight: "700",
       color: "#1A3A6B",
