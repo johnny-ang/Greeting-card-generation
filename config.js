@@ -1,5 +1,5 @@
 // ============================================================
-//  config.js — 套圖工具模板設定
+//  config.js — 套圖工具模板設定（由管理者工具產生）
 // ============================================================
 
 const TEMPLATES = {
@@ -48,7 +48,9 @@ const TEMPLATES = {
     },
 
     brand: null,
+
     branch: null,
+
   },
 
   B: {
@@ -115,6 +117,7 @@ const TEMPLATES = {
       width: 0.3548,
       height: 0.0887,
     },
+
   },
 
   C: {
@@ -122,21 +125,21 @@ const TEMPLATES = {
     file: "templates/template_c.jpg",
 
     photo: {
-      x: 0.3974,
-      y: 0.7448,
-      width: 0.2134,
-      height: 0.254,
+      x: 0.4158,
+      y: 0.7948,
+      width: 0.1717,
+      height: 0.2023,
       fit: "contain",
     },
 
     name: {
       x: 0.6254,
-      y: 0.8044,
-      size: 0.0365,
+      y: 0.8511,
+      size: 0.05,
       weight: "700",
       color: "#1A3A6B",
       strokeColor: "#FFFFFF",
-      strokeWidth: 0.0058,
+      strokeWidth: 0.003,
       glow: false,
       align: "left",
       letterSpacing: 0.0192,
@@ -146,13 +149,13 @@ const TEMPLATES = {
     },
 
     phone: {
-      x: 0.6287,
-      y: 0.8969,
-      size: 0.0365,
+      x: 0.627,
+      y: 0.9436,
+      size: 0.05,
       weight: "700",
       color: "#1A3A6B",
       strokeColor: "#FFFFFF",
-      strokeWidth: 0.0058,
+      strokeWidth: 0.003,
       glow: false,
       align: "left",
       letterSpacing: 0,
@@ -168,19 +171,20 @@ const TEMPLATES = {
     },
 
     branch: {
-      x: 0.4827,
-      y: 0.8527,
+      x: 0.0244,
+      y: 0.9227,
       size: 0.04,
       weight: "700",
       color: "#1A3A6B",
       strokeColor: "#FFFFFF",
-      strokeWidth: 0.0058,
+      strokeWidth: 0.003,
       glow: false,
       align: "center",
       letterSpacing: 0,
-      width: 0.4114,
+      width: 0.3681,
       height: 0.0661,
     },
+
   },
 
   D: {
@@ -247,6 +251,7 @@ const TEMPLATES = {
       width: 0.4114,
       height: 0.0661,
     },
+
   },
 
 };
@@ -257,5 +262,5 @@ const FONT_FAMILY = "Jf Open粉圓";
 // 品牌 Logo 對照表
 const BRAND_LOGOS = {
   "永慶不動產": "https://lh3.googleusercontent.com/d/1LcuW_637pHoTXDPW23Rk7UYZSjunWlA0",
-  "永義房屋":   "https://lh3.googleusercontent.com/d/1EFqWLqVE69s1yANFGcWauNjkCGtiI5Vc",
+  "永義房屋": "https://lh3.googleusercontent.com/d/1EFqWLqVE69s1yANFGcWauNjkCGtiI5Vc"
 };
