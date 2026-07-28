@@ -121,7 +121,7 @@ const TEMPLATES = {
   },
 
   C: {
-    label: "不動產安全",
+    label: "特留份修法",
     file: "templates/template_c.jpg",
 
     photo: {
@@ -170,7 +170,7 @@ const TEMPLATES = {
       height: 0.091,
     },
 
-    branch: null,
+    branch: ,
 
   },
 
