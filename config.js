@@ -1,5 +1,5 @@
 // ============================================================
-//  config.js — 套圖工具模板設定（由管理者工具產生）
+//  config.js — 套圖工具模板設定
 // ============================================================
 
 const TEMPLATES = {
@@ -48,9 +48,7 @@ const TEMPLATES = {
     },
 
     brand: null,
-
     branch: null,
-
   },
 
   B: {
@@ -117,7 +115,6 @@ const TEMPLATES = {
       width: 0.3548,
       height: 0.0887,
     },
-
   },
 
   C: {
@@ -183,6 +180,7 @@ const TEMPLATES = {
       letterSpacing: 0,
       width: 0.4114,
       height: 0.0661,
+    },
   },
 
   D: {
@@ -249,7 +247,6 @@ const TEMPLATES = {
       width: 0.4114,
       height: 0.0661,
     },
-
   },
 
 };
@@ -260,5 +257,5 @@ const FONT_FAMILY = "Jf Open粉圓";
 // 品牌 Logo 對照表
 const BRAND_LOGOS = {
   "永慶不動產": "https://lh3.googleusercontent.com/d/1LcuW_637pHoTXDPW23Rk7UYZSjunWlA0",
-  "永義房屋": "https://lh3.googleusercontent.com/d/1EFqWLqVE69s1yANFGcWauNjkCGtiI5Vc"
+  "永義房屋":   "https://lh3.googleusercontent.com/d/1EFqWLqVE69s1yANFGcWauNjkCGtiI5Vc",
 };
