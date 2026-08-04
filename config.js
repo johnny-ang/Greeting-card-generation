@@ -50,8 +50,8 @@ const TEMPLATES = {
     brand: null,
 
     branch: {
-      x: 0.7359,
-      y: 0.9383,
+      x: 0.6692,
+      y: 0.93,
       size: 0.05,
       weight: "700",
       color: "#1A3A6B",
