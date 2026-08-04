@@ -59,7 +59,7 @@ const TEMPLATES = {
       strokeWidth: 0.002,
       glow: false,
       align: "center",
-      letterSpacing: 0.05,
+      letterSpacing: 0.006,
       width: 0.5149,
       height: 0.0887,
     },
