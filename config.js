@@ -49,7 +49,20 @@ const TEMPLATES = {
 
     brand: null,
 
-    branch: null,
+    branch: {
+      x: 0.5043,
+      y: 0.715,
+      size: 0.0365,
+      weight: "700",
+      color: "#1A3A6B",
+      strokeColor: "#FFFFFF",
+      strokeWidth: 0.003,
+      glow: false,
+      align: "center",
+      letterSpacing: 0,
+      width: 0.3548,
+      height: 0.0887,
+    },
 
   },
 
