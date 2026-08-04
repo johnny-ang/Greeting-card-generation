@@ -34,7 +34,7 @@ const TEMPLATES = {
 
     phone: {
       x: 0.4871,
-      y: 0.8203,
+      y: 0.8253,
       size: 0.07,
       weight: "700",
       color: "#1A3A6B",
@@ -50,17 +50,17 @@ const TEMPLATES = {
     brand: null,
 
     branch: {
-      x: 0.5043,
-      y: 0.715,
-      size: 0.0365,
+      x: 0.4509,
+      y: 0.8883,
+      size: 0.05,
       weight: "700",
       color: "#1A3A6B",
       strokeColor: "#FFFFFF",
       strokeWidth: 0.003,
       glow: false,
       align: "center",
-      letterSpacing: 0,
-      width: 0.3548,
+      letterSpacing: 0.5,
+      width: 0.5149,
       height: 0.0887,
     },
 
