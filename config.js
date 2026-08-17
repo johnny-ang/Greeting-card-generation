@@ -5,7 +5,7 @@
 const TEMPLATES = {
 
   A: {
-    label: "永慶_父親節",
+    label: "業績雙冠軍",
     file: "templates/template_a.jpg",
 
     photo: {
@@ -67,7 +67,7 @@ const TEMPLATES = {
   },
 
   B: {
-    label: "永義_父親節",
+    label: "第二季戰報",
     file: "templates/template_b.jpg",
 
     photo: {
