@@ -9,16 +9,16 @@ const TEMPLATES = {
     file: "templates/template_a.jpg",
 
     photo: {
-      x: 0.6824,
-      y: 0.5097,
-      width: 0.3118,
-      height: 0.4824,
+      x: 0.6941,
+      y: 0.5264,
+      width: 0.3034,
+      height: 0.4745,
       fit: "contain",
     },
 
     name: {
-      x: 0.4835,
-      y: 0.7911,
+      x: 0.4085,
+      y: 0.8244,
       size: 0.05,
       weight: "700",
       color: "#000000",
@@ -42,7 +42,7 @@ const TEMPLATES = {
       strokeWidth: 0.0058,
       glow: false,
       align: "left",
-      letterSpacing: 0,
+      letterSpacing: 0.005,
       width: 0.8387,
       height: 0.1235,
     },
@@ -55,9 +55,9 @@ const TEMPLATES = {
     },
 
     branch: {
-      x: 0.3959,
-      y: 0.7783,
-      size: 0.05,
+      x: 0.4426,
+      y: 0.7466,
+      size: 0.03,
       weight: "700",
       color: "#000000",
       strokeColor: "#FFFFFF",
@@ -109,7 +109,7 @@ const TEMPLATES = {
       strokeWidth: 0.0058,
       glow: false,
       align: "left",
-      letterSpacing: 0,
+      letterSpacing: 0.005,
       width: 0.4454,
       height: 0.1235,
     },
