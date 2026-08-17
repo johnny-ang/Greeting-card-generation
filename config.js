@@ -114,27 +114,8 @@ const TEMPLATES = {
       height: 0.1235,
     },
 
-    brand: {
-      x: 0.0237,
-      y: 0.7127,
-      width: 0.3572,
-      height: 0.091,
-    },
-
-    branch: {
-      x: 0.6692,
-      y: 0.93,
-      size: 0.05,
-      weight: "700",
-      color: "#000000",
-      strokeColor: "#FFFFFF",
-      strokeWidth: 0.002,
-      glow: false,
-      align: "center",
-      letterSpacing: 0.006,
-      width: 0.5149,
-      height: 0.0887,
-    },
+    brand: null,
+    branch: null,
 
   },
 
