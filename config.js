@@ -76,8 +76,8 @@ const TEMPLATES = {
     file: "templates/template_b.jpg",
 
     photo: {
-      x: 0.5074,
-      y: 0.1131,
+      x: 0.5141,
+      y: 0.2798,
       width: 0.4851,
       height: 0.6673,
       fit: "contain",
