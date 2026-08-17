@@ -47,7 +47,12 @@ const TEMPLATES = {
       height: 0.1235,
     },
 
-    brand: null,
+    brand: {
+      x: 0.0237,
+      y: 0.7127,
+      width: 0.3572,
+      height: 0.091,
+    },
 
     branch: {
       x: 0.6692,
@@ -109,8 +114,13 @@ const TEMPLATES = {
       height: 0.1235,
     },
 
-    brand: null,
-
+    brand: {
+      x: 0.0237,
+      y: 0.7127,
+      width: 0.3572,
+      height: 0.091,
+    },
+    
     branch: {
       x: 0.6692,
       y: 0.93,
