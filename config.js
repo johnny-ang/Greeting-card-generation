@@ -5,7 +5,7 @@
 const TEMPLATES = {
 
   A: {
-    label: "業績雙冠軍",
+    label: "永義中秋賀卡",
     file: "templates/template_a.jpg",
 
     photo: {
@@ -72,7 +72,7 @@ const TEMPLATES = {
   },
 
   B: {
-    label: "第二季戰報",
+    label: "永慶中秋賀卡",
     file: "templates/template_b.jpg",
 
     photo: {
