@@ -17,8 +17,8 @@ const TEMPLATES = {
     },
 
     name: {
-      x: 0.2052,
-      y: 0.7044,
+      x: 0.2035,
+      y: 0.7627,
       size: 0.05,
       weight: "700",
       color: "#000000",
@@ -33,8 +33,8 @@ const TEMPLATES = {
     },
 
     phone: {
-      x: 0.0738,
-      y: 0.7951,
+      x: 0.0705,
+      y: 0.8318,
       size: 0.06,
       weight: "700",
       color: "#000000",
@@ -55,8 +55,8 @@ const TEMPLATES = {
     },
 
     branch: {
-      x: 0.4093,
-      y: 0.89,
+      x: 0.6626,
+      y: 0.9484,
       size: 0.06,
       weight: "700",
       color: "#000000",
@@ -76,16 +76,16 @@ const TEMPLATES = {
     file: "templates/template_b.jpg",
 
     photo: {
-      x: 0.4642,
-      y: 0.0898,
+      x: 0.4625,
+      y: 0.0915,
       width: 0.4851,
       height: 0.6673,
       fit: "contain",
     },
 
     name: {
-      x: 0.5385,
-      y: 0.706,
+      x: 0.5602,
+      y: 0.7577,
       size: 0.07,
       weight: "700",
       color: "#000000",
@@ -100,8 +100,8 @@ const TEMPLATES = {
     },
 
     phone: {
-      x: 0.432,
-      y: 0.7837,
+      x: 0.452,
+      y: 0.8087,
       size: 0.06,
       weight: "700",
       color: "#000000",
