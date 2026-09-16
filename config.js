@@ -13,13 +13,13 @@ const TEMPLATES = {
       y: 0.093,
       width: 0.5918,
       height: 0.6861,
-      fit: "contain",
+      fit: "cover",
     },
 
     name: {
       x: 0.2035,
       y: 0.7627,
-      size: 0.05,
+      size: 0.06,
       weight: "700",
       color: "#000000",
       strokeColor: "#FFFFFF",
@@ -56,7 +56,7 @@ const TEMPLATES = {
 
     branch: {
       x: 0.6626,
-      y: 0.9484,
+      y: 0.9201,
       size: 0.06,
       weight: "700",
       color: "#000000",
@@ -100,8 +100,8 @@ const TEMPLATES = {
     },
 
     phone: {
-      x: 0.452,
-      y: 0.8087,
+      x: 0.4537,
+      y: 0.852,
       size: 0.06,
       weight: "700",
       color: "#000000",
