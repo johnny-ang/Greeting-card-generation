@@ -9,16 +9,16 @@ const TEMPLATES = {
     file: "templates/template_a.jpg",
 
     photo: {
-      x: 0.6941,
-      y: 0.5264,
-      width: 0.3034,
-      height: 0.4745,
+      x: 0.0874,
+      y: 0.0947,
+      width: 0.4684,
+      height: 0.6691,
       fit: "contain",
     },
 
     name: {
-      x: 0.3868,
-      y: 0.8161,
+      x: 0.3885,
+      y: 0.6961,
       size: 0.05,
       weight: "700",
       color: "#000000",
@@ -33,8 +33,8 @@ const TEMPLATES = {
     },
 
     phone: {
-      x: 0.0838,
-      y: 0.9035,
+      x: 0.0821,
+      y: 0.7668,
       size: 0.07,
       weight: "700",
       color: "#000000",
@@ -48,15 +48,15 @@ const TEMPLATES = {
     },
 
     brand: {
-      x: 0.0254,
-      y: 0.686,
+      x: 0.6204,
+      y: 0.336,
       width: 0.3572,
       height: 0.091,
     },
 
     branch: {
-      x: 0.5193,
-      y: 0.7333,
+      x: 0.4093,
+      y: 0.89,
       size: 0.03,
       weight: "700",
       color: "#000000",
@@ -76,16 +76,16 @@ const TEMPLATES = {
     file: "templates/template_b.jpg",
 
     photo: {
-      x: 0.5125,
-      y: 0.2798,
+      x: 0.4692,
+      y: 0.0998,
       width: 0.4851,
       height: 0.6673,
       fit: "contain",
     },
 
     name: {
-      x: 0.6251,
-      y: 0.8627,
+      x: 0.6318,
+      y: 0.6977,
       size: 0.07,
       weight: "700",
       color: "#000000",
@@ -100,8 +100,8 @@ const TEMPLATES = {
     },
 
     phone: {
-      x: 0.5004,
-      y: 0.9336,
+      x: 0.4987,
+      y: 0.7803,
       size: 0.06,
       weight: "700",
       color: "#000000",
@@ -115,6 +115,7 @@ const TEMPLATES = {
     },
 
     brand: null,
+
     branch: null,
 
   },
