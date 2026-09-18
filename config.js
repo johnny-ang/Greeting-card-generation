@@ -141,8 +141,8 @@ const TEMPLATES = {
     },
 
     name: {
-      x: 0.6588,
-      y: 0.8527,
+      x: 0.6905,
+      y: 0.8677,
       size: 0.04,
       weight: "700",
       color: "#1A3A6B",
@@ -157,8 +157,8 @@ const TEMPLATES = {
     },
 
     phone: {
-      x: 0.6254,
-      y: 0.9085,
+      x: 0.6621,
+      y: 0.9252,
       size: 0.04,
       weight: "700",
       color: "#1A3A6B",
@@ -179,7 +179,7 @@ const TEMPLATES = {
     },
 
     branch: {
-      x: 0.1444,
+      x: 0.2561,
       y: 0.8944,
       size: 0.04,
       weight: "700",
