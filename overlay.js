@@ -270,17 +270,14 @@ function initTool() {
         // 比例座標換算
         function px(cfg) {
   if (!cfg) return null;
-  const h = cfg.height != null ? cfg.height * H : null;
-  const y = cfg.alignBottom
-    ? H - h
-    : (cfg.y != null ? cfg.y * H : 0);
   return {
     x:      cfg.x      * W,
-    y:      y,
-            width:  cfg.width  != null ? cfg.width  * W : null,
-            height: cfg.height != null ? cfg.height * H : null,
-            fit:    cfg.fit,
-          };
+    y:      cfg.y      * H,
+    width:  cfg.width  != null ? cfg.width  * W : null,
+    height: cfg.height != null ? cfg.height * H : null,
+    fit:    cfg.fit,
+  };
+}
         }
         function pxText(cfg) {
           if (!cfg) return null;
