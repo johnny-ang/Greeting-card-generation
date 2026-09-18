@@ -129,7 +129,7 @@ const TEMPLATES = {
   },
 
   C: {
-    label: "特留份修法",
+    label: "第二戶七成",
     file: "templates/template_c.jpg",
 
     photo: {
