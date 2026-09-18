@@ -133,10 +133,10 @@ const TEMPLATES = {
     file: "templates/template_c.jpg",
 
     photo: {
-      x: 0.0076,
-      y: 0.0731,
-      width: 0.3599,
-      height: 0.464,
+      x: 0.0093,
+      y: 0.1131,
+      width: 0.3182,
+      height: 0.4257,
       fit: "contain",
     },
 
