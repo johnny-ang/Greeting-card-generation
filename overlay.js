@@ -428,7 +428,7 @@ function initTool() {
         const sw = img.width  * scale;
         const sh = img.height * scale;
         const dx = x + (width  - sw) / 2;
-        const dy = y + (height - sh) / 2;
+        const dy = y + (height - sh);
         ctx.drawImage(img, dx, dy, sw, sh);
       } else {
         // cover：填滿框架（裁切）
