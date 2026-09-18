@@ -14,6 +14,7 @@ const TEMPLATES = {
       width: 0.5918,
       height: 0.6861,
       fit: "contain",
+      alignBottom: true,
     },
 
     name: {
@@ -76,6 +77,7 @@ const TEMPLATES = {
       width: 0.4851,
       height: 0.6673,
       fit: "contain",
+      alignBottom: true,
     },
 
     name: {
@@ -138,6 +140,7 @@ const TEMPLATES = {
       width: 0.3599,
       height: 0.464,
       fit: "contain",
+      alignBottom: true,
     },
 
     name: {
@@ -205,6 +208,7 @@ const TEMPLATES = {
       width: 0.2984,
       height: 0.261,
       fit: "contain",
+      alignBottom: true,
     },
 
     name: {
