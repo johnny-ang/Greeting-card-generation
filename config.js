@@ -129,7 +129,7 @@ const TEMPLATES = {
   },
 
   C: {
-    label: "第二戶七成",
+    label: "特留份修法",
     file: "templates/template_c.jpg",
 
     photo: {
@@ -141,9 +141,9 @@ const TEMPLATES = {
     },
 
     name: {
-      x: 0.6221,
-      y: 0.8294,
-      size: 0.05,
+      x: 0.6588,
+      y: 0.8527,
+      size: 0.04,
       weight: "700",
       color: "#1A3A6B",
       strokeColor: "#FFFFFF",
@@ -157,9 +157,9 @@ const TEMPLATES = {
     },
 
     phone: {
-      x: 0.6237,
-      y: 0.8902,
-      size: 0.05,
+      x: 0.6254,
+      y: 0.9085,
+      size: 0.04,
       weight: "700",
       color: "#1A3A6B",
       strokeColor: "#FFFFFF",
@@ -179,7 +179,7 @@ const TEMPLATES = {
     },
 
     branch: {
-      x: 0.0844,
+      x: 0.1444,
       y: 0.8944,
       size: 0.04,
       weight: "700",
