@@ -278,7 +278,7 @@ function initTool() {
     fit:    cfg.fit,
   };
 }
-        }
+        
         function pxText(cfg) {
           if (!cfg) return null;
           const base = Math.min(W, H);
