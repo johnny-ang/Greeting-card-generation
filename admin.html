@@ -732,8 +732,11 @@ function getElementRect(key) {
   const scaleX  = canvasW / BW;
   const scaleY  = canvasH / BH;
 
-  const cx = (cfg.x      || 0)    * BW * scaleX;
-  const cy = (cfg.y      || 0)    * BH * scaleY;
+  const cx = (cfg.x || 0) * BW * scaleX;
+const ch_pre = (cfg.height || 0.05) * BH * scaleY;
+const cy = cfg.alignBottom
+  ? canvas.height - ch_pre
+  : (cfg.y || 0) * BH * scaleY;
   const cw = (cfg.width  || 0.1)  * BW * scaleX;
   const ch = (cfg.height || 0.05) * BH * scaleY;
   return { cx, cy, cw, ch, BW, BH, scaleX, scaleY };
